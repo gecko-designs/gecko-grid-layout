@@ -1,0 +1,89 @@
+@import "variables.scss";
+.wp-block-gecko-grid-layout-editor {
+	>.editor-inner-blocks {
+		>.editor-block-list__layout {
+			padding: 1rem;
+			display: grid;
+			grid-template-columns: repeat(5, minmax(100px, 1fr));
+			grid-gap: 1rem;
+			grid-auto-rows: minmax(calc(100%/5), auto);
+			grid-auto-flow: dense;
+
+			@media (max-width: $bp-tablet) {
+				grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+				// grid-auto-rows: minmax(200px, auto);
+			}
+
+			@media (max-width: $bp-mobile) {
+				grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+				grid-auto-rows: minmax(calc(100%/2), auto);
+			}
+
+			>[data-type="gecko/grid-layout-item"] {
+				margin-left: 0 !important;
+				margin-right: 0 !important;
+				grid-column-end: span 1;
+				grid-row-end: span 1;
+				// Prevent the columns from growing wider than their distributed sizes.
+				min-width: 0;
+
+				// Prevent long unbroken words from overflowing.
+				word-break: break-word; // For back-compat.
+				overflow-wrap: break-word; // New standard.
+				display: flex;
+				flex-direction: column;
+				flex: 1;
+				// Responsiveness: Show at most one columns on mobile.
+				flex-basis: 100%;
+				padding-top: 0;
+				padding-bottom: 0;
+				height: 100%;
+				background-size: cover;
+				background-position: center;
+				background-image: none !important; // Maybe move
+				background-color: transparent !important; // Maybe move
+				border: 1px solid pink; // Maybe move
+			}
+
+			.editor-block-list__block-edit {
+				flex-basis: 100%;
+				display: flex;
+				flex-direction: column;
+				flex: 1;
+
+				>[data-block] {
+					flex-basis: 100%;
+					height: 100%;
+				}
+			}
+
+			>.editor-block-list__block {
+				>.editor-block-list__block-edit {
+					margin-top: 1rem;
+					margin-bottom: 1rem;
+					margin-left: -28px;
+					margin-right: -28px;
+				}
+			}
+		}
+	}
+
+	.block-list-appender {
+		display: block;
+		// background-color: #F0F0F0;
+		padding: 1rem;
+		text-align: center;
+		grid-column-end: span 4;
+		grid-row-end: span 1;
+		cursor: pointer;
+	}
+
+	&__item {
+		padding: 1rem;
+		position: relative;
+		background-size: cover;
+		background-position: center;
+		height: 100%;
+		width: 100%;
+	}
+}
