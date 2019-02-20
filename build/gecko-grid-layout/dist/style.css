@@ -1,0 +1,30 @@
+.wp-block-gecko-grid-layout {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(100px, 1fr));
+  grid-gap: 1rem;
+  grid-auto-rows: minmax(calc(100vw/5), auto);
+  grid-auto-flow: dense;
+}
+@media (max-width: 960px) {
+  .wp-block-gecko-grid-layout {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .wp-block-gecko-grid-layout {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-auto-rows: minmax(calc(100vw/2), auto);
+  }
+}
+.wp-block-gecko-grid-layout__item {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  grid-column-end: span 1;
+  grid-row-end: span 1;
+}
+@media (max-width: 480px) {
+  .wp-block-gecko-grid-layout__item {
+    grid-column-end: span 5 !important;
+  }
+}

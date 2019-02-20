@@ -6,6 +6,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const globImporter = require('node-sass-glob-importer');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyPlugin = require('copy-webpack-plugin');
 /**
  * Given a string, returns a new string with dash separators converedd to
  * camel-case equivalent. This is not as aggressive as `_.camelCase` in
@@ -146,7 +147,6 @@ const settings = {
 						'@babel/plugin-syntax-dynamic-import',
 						'@babel/plugin-proposal-object-rest-spread',
 						'@babel/plugin-proposal-class-properties',
-						'babel-plugin-styled-components',
 					],
 				},
 			},
@@ -172,7 +172,18 @@ const settings = {
 
 if(production){
 	settings.plugins = [
+		new MiniCssExtractPlugin({
+			filename: '[name].css',
+		}),
 		new BundleAnalyzerPlugin(),
+		new CopyPlugin([
+			{ from: 'dist/editor-styles.css', to: path.resolve(__dirname, 'build/gecko-grid-layout/dist/editor-styles.css') },
+			{ from: 'dist/style.css', to: path.resolve(__dirname, 'build/gecko-grid-layout/dist/style.css') },
+			{ from: 'dist/editor.bundle.js', to: path.resolve(__dirname, 'build/gecko-grid-layout/dist/editor.bundle.js') },
+			{ from: 'dist/public.bundle.js', to: path.resolve(__dirname, 'build/gecko-grid-layout/dist/public.bundle.js') },
+			{ from: 'gecko-grid-layout.php', to: path.resolve(__dirname, 'build/gecko-grid-layout/gecko-grid-layout.php') },
+			{ from: 'readme.txt', to: path.resolve(__dirname, 'build/gecko-grid-layout/readme.txt') },
+    	]),
 	];
 }
 
