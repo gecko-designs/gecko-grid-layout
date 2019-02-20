@@ -26,6 +26,7 @@ class GeckoGridLayout {
 			"gecko-grid-layout-editor",
 			plugins_url("/dist/editor.bundle.js", __FILE__),
 			[
+				'jquery',
 				'wp-blocks',
 				'wp-editor',
 				'wp-element',

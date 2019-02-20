@@ -1,15 +1,11 @@
-/**
- * External dependencies
- */
-import { times } from 'lodash';
-import classnames from 'classnames';
-import memoize from 'memize';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTh } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { PanelBody, RangeControl, G, SVG, Path } from '@wordpress/components';
+import { PanelBody, RangeControl} from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import {
 	InspectorControls,
@@ -27,23 +23,12 @@ import {
 */
 const ALLOWED_BLOCKS = ['gecko/grid-layout-item'];
 
-/**
- * Returns the layouts configuration for a given number of columns.
- *
- * @param {number} columns Number of columns.
- *
- * @return {Object[]} Columns layout configuration.
- */
-const getColumnsTemplate = memoize( ( columns ) => {
-	return times( columns, () => [ 'gecko/grid-layout-item' ] );
-} );
-
 export const name = 'gecko/grid-layout';
 
 export const settings = {
-	title: __( 'Grid' ),
+	title: __( 'Grid Layout' ),
 
-	icon: <SVG viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><Path fill="none" d="M0 0h24v24H0V0z" /><G><Path d="M4,4H20a2,2,0,0,1,2,2V18a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4ZM4 6V18H8V6Zm6 0V18h4V6Zm6 0V18h4V6Z" /></G></SVG>,
+	icon: <FontAwesomeIcon icon={faTh} />,
 
 	category: 'layout',
 
@@ -69,7 +54,6 @@ export const settings = {
 
 	edit( { attributes, setAttributes, className } ) {
 		const { columns, gap } = attributes;
-		const classes = classnames( className );
 		const styles = 'grid-template-columns: repeat(' + columns + ', minmax(100px, 1fr));	grid-auto-rows: minmax(100px, auto); grid-gap:' + gap + 'rem;';
 
 		return (
@@ -77,7 +61,7 @@ export const settings = {
 				<InspectorControls>
 					<PanelBody>
 						<RangeControl
-							label={ __( 'Grid' ) }
+							label={ __( 'Columns' ) }
 							value={ columns }
 							onChange={ ( nextColumns ) => {
 								setAttributes( {
@@ -102,7 +86,12 @@ export const settings = {
 				</InspectorControls>
 				<div className="wp-block-gecko-grid-layout-editor" data-passthru={styles} data-grid={columns}>
 					<InnerBlocks
-						template={ getColumnsTemplate(2) }
+						template = {
+							[
+								['gecko/grid-layout-item'],
+								['gecko/grid-layout-item']
+							]
+						}
 						templateLock={false}
 						allowedBlocks={ ALLOWED_BLOCKS } />
 				</div>
@@ -110,7 +99,7 @@ export const settings = {
 		);
 	},
 
-	save( { attributes } ) {
+	save() {
 		return (
 			<div>
 				<InnerBlocks.Content />

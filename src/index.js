@@ -28,6 +28,7 @@ jQuery(function ($) {
 					});
 				});
 			});
+			observer.disconnect();
 			observer.observe(this, {
 				attributes: true,
 				attributeFilter: ['style']
@@ -49,6 +50,7 @@ jQuery(function ($) {
 					console.log('Mustation', mutations);
 				});
 			});
+			observer.disconnect();
 			observer.observe(this, {
 				attributes: true,
 				attributeFilter: ['data-passthru', 'style'],
@@ -73,9 +75,13 @@ jQuery(function ($) {
 	}
 
 	$('body').on('DOMNodeInserted', '.wp-block-gecko-grid-layout-editor', function (e) {
-		updateStylesGrid();
-		updateStylesGridItem();
-		console.log('HEY ADDED NODE');
+		if ($('.wp-block-gecko-grid-layout-editor')){
+			// console.log('Added New DomNode', e)
+			updateStylesGrid();
+			updateStylesGridItem();
+			listenForStyleChangesGrid()
+			listenForStyleChangesGridItem();
+		}
 	});
 
 	$(window).load(function () {

@@ -19,7 +19,7 @@ import {
 export const name = 'gecko/grid-layout-item';
 
 export const settings = {
-	title: __( 'Grid Item' ),
+	title: __( 'Item' ),
 
 	parent: ['gecko/grid-layout'],
 
@@ -56,6 +56,7 @@ export const settings = {
 	},
 
 	edit({ attributes, setAttributes, className }) {
+		console.log(arguments);
 		const { h, w, bgMedia, bgMediaUrl, bgColor } = attributes;
 		const styles = {
 			gridColumnEnd: 'span '+ w,
@@ -132,7 +133,6 @@ export const settings = {
 				</div>
 			</Fragment>
 		);
-		// return <InnerBlocks templateLock={ false } />;
 	},
 
 	save() {
