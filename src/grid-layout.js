@@ -90,7 +90,8 @@ export const settings = {
 							]
 						}
 						templateLock={false}
-						allowedBlocks={ ALLOWED_BLOCKS } />
+						allowedBlocks={ ALLOWED_BLOCKS }
+						/>
 				</div>
 			</Fragment>
 		);

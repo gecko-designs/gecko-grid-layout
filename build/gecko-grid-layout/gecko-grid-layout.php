@@ -65,7 +65,7 @@ class GeckoGridLayout {
 	 */
 	public function grid_callback( $attributes, $content ) {
 		// Sort of a hack at the moment.
-		$columns = (isset($attributes['columns'])) ? "grid-template-columns: repeat(".$attributes['columns'].", minmax(100px, 1fr));" : "";
+		$columns = (isset($attributes['columns'])) ? "grid-template-columns:repeat(".$attributes['columns'].", minmax(100px, 1fr));" : "";
 		$rows = (isset($attributes['columns'])) ? "grid-auto-rows: minmax(calc(100vw/".$attributes['columns']."), auto);" : "";
 		$gap = (isset($attributes['gap'])) ? "grid-gap:".$attributes['gap']."rem;" : "";
 		$styles = 'style="'.$columns.$rows.'"';
@@ -82,12 +82,17 @@ class GeckoGridLayout {
 	 */
 	public function grid_item_callback( $attributes, $content ) {
 		// $image = wp_get_attachment_image_url($attributes[bgMedia],'full');
+		$type = (isset($attributes['type']))? $attributes['type'] : false;
 		$bgMedia = (isset($attributes['bgMediaUrl'])) ? "background-image: url(".$attributes['bgMediaUrl'].");": "";
-		$bgColor = (isset($attributes['bgColor'])) ? "background-color: ".$attributes['bgColor'].";" : "";
+		$bgColor = (isset($attributes['bgColor'])) ? "--background: ".$attributes['bgColor']."; background-color: ".$attributes['bgColor'].";" : "";
 		$spanColumn = (isset($attributes['w'])) ? "grid-column-end: span ".$attributes['w'].";" : "";
 		$spanRow = (isset($attributes['h'])) ? "grid-row-end: span ".$attributes['h'].";" : "";
-		$styles = $bgMedia.$bgColor.$spanColumn.$spanRow;
-		$class = 'wp-block-gecko-grid-layout__item';
+		$opacity = (isset($attributes['opacity'])) ? "--opacity: ".$attributes['opacity'].";" : "";
+		$styles = $spanColumn.$spanRow.$bgColor;
+		$styles .= ($type === 'image' || $type === 'image-content') ? $bgMedia : '';
+		$styles .= ($type === 'image-content') ? $opacity : '';
+		$content = ($type === 'image') ? '' : $content ;
+		$class = 'wp-block-gecko-grid-layout__item wp-block-gecko-grid-layout__item--'.$type;
 		// $encoded = json_encode($attributes, JSON_HEX_APOS|JSON_HEX_QUOT);
 		return sprintf('<div class="%s" style="%s">%s</div>',
 		$class, $styles, $content);

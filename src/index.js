@@ -45,7 +45,7 @@ jQuery(function ($) {
 						const styles = $(this).attr("data-passthru");
 						const grid = $(this).attr("data-grid");
 						$(this).find(".editor-block-list__layout").attr("style", styles);
-						$(this).find(".block-list-appender").attr("style", "grid-column-end: span "+grid+";");
+						// $(this).find(".block-list-appender").attr("style", "grid-column-end: span "+grid+";");
 					});
 					console.log('Mustation', mutations);
 				});
@@ -70,7 +70,7 @@ jQuery(function ($) {
 			const styles = $(this).attr("data-passthru");
 			const grid = $(this).attr("data-grid");
 			$(this).find(".editor-block-list__layout").attr("style", styles);
-			$(this).find(".block-list-appender").attr("style", "grid-column-end: span " + grid + ";");
+			// $(this).find(".block-list-appender").attr("style", "grid-column-end: span " + grid + ";");
 		});
 	}
 

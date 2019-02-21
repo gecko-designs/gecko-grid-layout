@@ -1,3 +1,4 @@
+import TypeSelect from './type-select';
 /**
  * WordPress dependencies
  */
@@ -13,6 +14,7 @@ import {
 	InspectorControls,
 	InnerBlocks,
 	MediaUpload,
+	MediaPlaceholder,
 	ColorPalette,
 } from '@wordpress/editor';
 
@@ -30,12 +32,21 @@ export const settings = {
 	category: 'common',
 
 	supports: {
+		className: true,
 		inserter: true,
 		reusable: false,
 		html: false,
 	},
 
 	attributes: {
+		type:{
+			type: 'string',
+			default: undefined, //solid // image //image-content
+		},
+		opacity: {
+			type: 'number',
+			default: 1,
+		},
 		h: {
 			type: 'number',
 			default: 1,
@@ -57,17 +68,34 @@ export const settings = {
 
 	edit({ attributes, setAttributes, className }) {
 		console.log(arguments);
-		const { h, w, bgMedia, bgMediaUrl, bgColor } = attributes;
+		const { opacity, h, w, type, bgMedia, bgMediaUrl, bgColor } = attributes;
 		const styles = {
+			'--background': bgColor,
+			'--opacity': opacity,
 			gridColumnEnd: 'span '+ w,
 			gridRowEnd: 'span ' + h,
 			backgroundColor: bgColor,
 			backgroundImage: 'url(' + bgMediaUrl + ')',
 		};
-
+		if(type === "image"){
+			delete(styles.backgroundColor);
+		}
+		if (type === "solid") {
+			delete(styles.backgroundImage);
+		}
 		return (
 			<Fragment>
 				<InspectorControls>
+					<PanelBody title="Type">
+						<TypeSelect 
+							onSelect = {(next) => {
+									setAttributes({
+										type: next,
+									});
+								}}
+							value={type}
+						/>
+					</PanelBody>
 					<PanelBody  title="Size Settings">
 						<RangeControl
 							label={ __( 'Height' ) }
@@ -93,43 +121,94 @@ export const settings = {
 						/>
 					</PanelBody>
 					<PanelBody title="Background Settings">
-						<MediaUpload
-							onSelect={(value) => {
-								console.log(value);
+						{
+							(type === 'image' || type === 'image-content') &&
+							<MediaUpload
+								onSelect={(value) => {
+									console.log(value);
+									setAttributes({
+										bgMedia: value.id,
+										bgMediaUrl: value.url,
+									});
+								}}
+								type={['image', 'video']}
+								value={(bgMedia)? bgMedia: null }
+								render={({open}) => {
+									return(
+										<div>
+											{bgMediaUrl && <img src={bgMediaUrl} onClick={open} width="100%" height="auto" style={{cursor: "pointer"}}/>}
+											{!bgMediaUrl && <div className={'button button-large'} onClick={open}>
+												Choose Background
+											</div>}
+										</div>
+									);
+								}}
+							/>
+						}
+						<hr />
+						{
+							(type === 'solid' || type === 'image-content') &&
+							<div>
+								<ColorPalette
+									label='Background Color'
+									value={(bgColor) ? bgColor.color : undefined}
+									onChange = {
+										(value, test) => {
+											console.log('color', value);
+											setAttributes({
+												bgColor: value
+											});
+										}
+									}
+								/>
+								<hr />
+							</div>
+						}
+						{
+							(type === 'image-content') &&
+							<RangeControl
+								label={ __( 'Opacity' ) }
+								value={ opacity }
+								onChange={ ( next ) => {
+									setAttributes( {
+										opacity: next,
+									} );
+								} }
+								min = "0"
+								max = "1"
+								step = "0.1"
+							/>
+						}
+					</PanelBody>
+				</InspectorControls>
+				<div className={`wp-block-gecko-grid-layout-editor__item ${type} ${attributes.className}`} style={styles}>
+					<div className = "wp-block-gecko-grid-layout-editor__wrap">
+					{!type && <TypeSelect 
+						onSelect = {(next) => {
 								setAttributes({
-									bgMedia: value.id,
-									bgMediaUrl: value.url,
+									type: next,
 								});
 							}}
-							type={['image', 'video']}
-							value={(bgMedia)? bgMedia: null }
-							render={({open}) => {
-								return(
-									<div className={'button button-large'} onClick={open}>
-										Choose Background
-									</div>
-								);
-							}}
+					/>}
+					{
+						(type === 'image' || type === 'image-content') &&
+						!bgMedia &&
+						<MediaPlaceholder
+							onSelect={(value) => {
+									setAttributes({
+										bgMedia: value.id,
+										bgMediaUrl: value.url,
+									});
+								}}
+							allowedTypes={['image']}
+							accept="image/*"
 						/>
-						<hr />
-						<div>
-							<ColorPalette
-								label='Background Color'
-								value={(bgColor) ? bgColor.color : undefined}
-								onChange = {
-									(value) => {
-										setAttributes({
-											bgColor: value
-										});
-									}
-								}
-							/>
-							<p></p>
-						</div>
-				</PanelBody>
-				</InspectorControls>
-				<div className="wp-block-gecko-grid-layout-editor__item" style={styles}>
-					<InnerBlocks templateLock={ false } />
+					}
+					{ 
+						(type === 'solid' || (type === 'image-content' && bgMedia)) &&
+						<InnerBlocks templateLock={ false } />
+					}
+					</div>
 				</div>
 			</Fragment>
 		);
