@@ -5,9 +5,9 @@ export default function({value, onSelect}){
 		return onSelect(next);
 	}
 	const types = [
-		{slug: 'solid', name:'Solid'},
-		{slug: 'image', name:'Image'},
-		{slug: 'image-content', name:'Image with Content'},
+		{ slug: 'solid', name: 'Solid', icon: <span class="dashicons dashicons-admin-appearance"></span>},
+		{ slug: 'image', name: 'Image', icon: <span class="dashicons dashicons-format-image"></span>},
+		{ slug: 'image-content', name: 'Image with Content', icon: <span class="dashicons dashicons-admin-appearance"></span>},
 	]
 	return(
 		<div className="wp-block-gecko-grid-layout-type-select">
@@ -18,7 +18,7 @@ export default function({value, onSelect}){
 					isSelected = "wp-block-gecko-grid-layout-type-select__item--selected"
 				}
 				return (
-					<div className={`wp-block-gecko-grid-layout-type-select__item ${isSelected}`} onClick={()=> selected(type.slug)}>{type.name}</div>
+					<div className={`wp-block-gecko-grid-layout-type-select__item ${isSelected}`} onClick={()=> selected(type.slug)}>{type.icon}{type.name}</div>
 				);
 			})}
 		</div>

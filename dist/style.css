@@ -7,16 +7,14 @@
 }
 @media (max-width: 960px) {
   .wp-block-gecko-grid-layout {
-    grid-template-columns: repeat(auto-fill, minmax(-webkit-max-content, 100vw));
-    grid-template-columns: repeat(auto-fill, minmax(max-content, 100vw));
-    grid-auto-rows: minmax(100px, auto);
+    grid-template-columns: minmax(100px, 1fr) !important;
+    grid-auto-rows: minmax(calc(100vw/2), auto) !important;
   }
 }
 @media (max-width: 480px) {
   .wp-block-gecko-grid-layout {
-    grid-template-columns: repeat(auto-fill, minmax(-webkit-max-content, 100vw));
-    grid-template-columns: repeat(auto-fill, minmax(max-content, 100vw));
-    grid-auto-rows: minmax(100px, auto);
+    grid-template-columns: minmax(100px, 1fr) !important;
+    grid-auto-rows: minmax(calc(100vw/2), auto) !important;
   }
 }
 .wp-block-gecko-grid-layout__item {
