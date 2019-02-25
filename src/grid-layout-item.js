@@ -67,7 +67,7 @@ export const settings = {
 	},
 
 	edit({ attributes, setAttributes, className }) {
-		console.log(arguments);
+		// console.log(arguments);
 		const { opacity, h, w, type, bgMedia, bgMediaUrl, bgColor } = attributes;
 		const styles = {
 			'--background': bgColor,
@@ -125,7 +125,7 @@ export const settings = {
 							(type === 'image' || type === 'image-content') &&
 							<MediaUpload
 								onSelect={(value) => {
-									console.log(value);
+									// console.log(value);
 									setAttributes({
 										bgMedia: value.id,
 										bgMediaUrl: value.url,
@@ -153,8 +153,7 @@ export const settings = {
 									label='Background Color'
 									value={(bgColor) ? bgColor.color : undefined}
 									onChange = {
-										(value, test) => {
-											console.log('color', value);
+										(value) => {
 											setAttributes({
 												bgColor: value
 											});
