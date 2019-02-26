@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.1
+ * Version: 1.0.2
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
@@ -66,10 +66,10 @@ class GeckoGridLayout {
 	 */
 	public function grid_callback( $attributes, $content ) {
 		// Sort of a hack at the moment.
-		$columns = (isset($attributes['columns'])) ? "grid-template-columns:repeat(".$attributes['columns'].", minmax(100px, 1fr));" : "";
-		$rows = (isset($attributes['columns'])) ? "grid-auto-rows: minmax(calc(100vw/".$attributes['columns']."), auto);" : "";
+		// $columns = (isset($attributes['columns'])) ? "grid-template-columns:repeat(".$attributes['columns'].", minmax(100px, 1fr));" : "";
+		// $rows = (isset($attributes['columns'])) ? "grid-auto-rows: minmax(calc(100vw/".$attributes['columns']."), auto);" : "";
 		$gap = (isset($attributes['gap'])) ? "grid-gap:".$attributes['gap']."rem;" : "";
-		$styles = ' style="'.$columns.$rows.$gap.'"';
+		$styles = ' style="'.$gap.'"';
 		$class = '"wp-block-gecko-grid-layout"';
 		$index = strpos( $content, $class);
 		if($index === false) {
@@ -89,11 +89,15 @@ class GeckoGridLayout {
 		$spanColumn = (isset($attributes['w'])) ? "grid-column-end: span ".$attributes['w'].";" : "";
 		$spanRow = (isset($attributes['h'])) ? "grid-row-end: span ".$attributes['h'].";" : "";
 		$opacity = (isset($attributes['opacity'])) ? "--opacity: ".$attributes['opacity'].";" : "";
+		$bgColorSlug = (isset($attributes['bgColorSlug'])) ? ' has-'.$attributes['bgColorSlug'].'-background-color' : "";
+		$bgBrightness = (isset($attributes['bgColorBrightness']) && $attributes['bgColorBrightness'] < 130) ? "dark" : "light";
 		$styles = $spanColumn.$spanRow.$bgColor;
 		$styles .= ($type === 'image' || $type === 'image-content') ? $bgMedia : '';
 		$styles .= ($type === 'image-content') ? $opacity : '';
 		$content = ($type === 'image') ? '' : $content ;
 		$class = 'wp-block-gecko-grid-layout__item wp-block-gecko-grid-layout__item--'.$type;
+		$class .= ' is-'.$bgBrightness.'-background';
+		$class .= $bgColorSlug;
 		// $encoded = json_encode($attributes, JSON_HEX_APOS|JSON_HEX_QUOT);
 		return sprintf('<div class="%s" style="%s">%s</div>',
 		$class, $styles, $content);

@@ -4,7 +4,7 @@
 		>.editor-block-list__layout {
 			padding: 1rem;
 			display: grid;
-			grid-template-columns: repeat(12, minmax(1rem, 1fr));
+			grid-template-columns: repeat(12, minmax(1px, 1fr));
 			grid-gap: 1rem;
 			grid-auto-rows: minmax(50px, auto);
 			grid-auto-flow: dense;
@@ -111,12 +111,11 @@
 	}
 }
 .wp-block-gecko-grid-layout-type-select {
-	background-color: white;
 	display: flex;
 	flex-wrap: wrap;
 	&__item {
 		font-size: 0.75rem;
-		line-height: 1.2rem;
+		line-height: 1.2em;
 		display: flex;
 		flex-direction: column;
 		text-align: center;

@@ -7,7 +7,7 @@ export default function({value, onSelect}){
 	const types = [
 		{ slug: 'solid', name: 'Solid', icon: <span class="dashicons dashicons-admin-appearance"></span>},
 		{ slug: 'image', name: 'Image', icon: <span class="dashicons dashicons-format-image"></span>},
-		{ slug: 'image-content', name: 'Image with Content', icon: <span class="dashicons dashicons-admin-appearance"></span>},
+		{ slug: 'image-content', name: 'Image with Content', icon: <span class="dashicons dashicons-format-gallery"></span>},
 	]
 	return(
 		<div className="wp-block-gecko-grid-layout-type-select">

@@ -1,4 +1,5 @@
 import TypeSelect from './type-select';
+import tinycolor from 'tinycolor2';
 /**
  * WordPress dependencies
  */
@@ -16,7 +17,11 @@ import {
 	MediaUpload,
 	MediaPlaceholder,
 	ColorPalette,
+	getColorObjectByColorValue,
 } from '@wordpress/editor';
+import {
+	select
+} from '@wordpress/data';
 
 export const name = 'gecko/grid-layout-item';
 
@@ -53,7 +58,7 @@ export const settings = {
 		},
 		w: {
 			type: 'number',
-			default: 1,
+			default: 4,
 		},
 		bgMedia: {
 			type: 'number',
@@ -64,11 +69,27 @@ export const settings = {
 		bgColor: {
 			type: 'string',
 		},
+		bgColorSlug: {
+			type: 'string',
+		},
+		bgColorBrightness: {
+			type: 'number', //light or dark
+		},
 	},
 
 	edit({ attributes, setAttributes, className, insertBlocksAfter }) {
 		console.log(arguments);
-		const { opacity, h, w, type, bgMedia, bgMediaUrl, bgColor } = attributes;
+		const {
+			opacity,
+			h,
+			w,
+			type,
+			bgMedia,
+			bgMediaUrl,
+			bgColor,
+			bgColorBrightness,
+			bgColorSlug,
+		} = attributes;
 		const styles = {
 			'--background': bgColor,
 			'--opacity': opacity,
@@ -83,6 +104,8 @@ export const settings = {
 		if (type === "solid") {
 			delete(styles.backgroundImage);
 		}
+		let lightOrDark = 'light';
+		if (bgColorBrightness < 130) lightOrDark = 'dark';
 		return (
 			<Fragment>
 				<InspectorControls>
@@ -154,9 +177,12 @@ export const settings = {
 									value={(bgColor) ? bgColor.color : undefined}
 									onChange = {
 										(value) => {
-											setAttributes({
-												bgColor: value
-											});
+											const settings = select('core/editor').getEditorSettings();
+											const colorSlug = (value) ? getColorObjectByColorValue(settings.colors, value).slug : undefined;
+											setAttributes({bgColorSlug: colorSlug});
+											const brightness = (value) ? tinycolor(value).getBrightness(): undefined;
+											setAttributes({bgColorBrightness: brightness});
+											setAttributes({bgColor: value});
 										}
 									}
 								/>
@@ -180,7 +206,12 @@ export const settings = {
 						}
 					</PanelBody>
 				</InspectorControls>
-				<div className={`wp-block-gecko-grid-layout-editor__item ${type} ${attributes.className}`} style={styles}>
+				< div className = {
+					`wp-block-gecko-grid-layout-editor__item ${type} ${attributes.className} has-${bgColorSlug}-background-color is-${lightOrDark}-background`
+				}
+				style = {
+					styles
+				} >
 					<div className = "wp-block-gecko-grid-layout-editor__wrap">
 					{!type && <TypeSelect 
 						onSelect = {(next) => {
