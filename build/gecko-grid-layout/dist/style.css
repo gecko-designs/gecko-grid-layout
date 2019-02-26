@@ -1,19 +1,19 @@
 .wp-block-gecko-grid-layout {
   display: grid;
-  grid-template-columns: repeat(5, minmax(100px, 1fr));
+  grid-template-columns: repeat(12, minmax(1rem, 1fr));
   grid-gap: 1rem;
-  grid-auto-rows: minmax(calc(100vw/5), auto);
+  grid-auto-rows: minmax(calc(100vw/12), auto);
   grid-auto-flow: dense;
 }
 @media (max-width: 960px) {
   .wp-block-gecko-grid-layout {
-    grid-template-columns: minmax(100px, 1fr) !important;
+    grid-template-columns: minmax(0px, 1fr) !important;
     grid-auto-rows: minmax(calc(100vw/2), auto) !important;
   }
 }
 @media (max-width: 480px) {
   .wp-block-gecko-grid-layout {
-    grid-template-columns: minmax(100px, 1fr) !important;
+    grid-template-columns: minmax(0px, 1fr) !important;
     grid-auto-rows: minmax(calc(100vw/2), auto) !important;
   }
 }
