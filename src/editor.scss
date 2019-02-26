@@ -4,11 +4,11 @@
 		>.editor-block-list__layout {
 			padding: 1rem;
 			display: grid;
-			grid-template-columns: repeat(5, minmax(100px, 1fr));
+			grid-template-columns: repeat(12, minmax(1rem, 1fr));
 			grid-gap: 1rem;
-			grid-auto-rows: minmax(100px, auto);
+			grid-auto-rows: minmax(50px, auto);
 			grid-auto-flow: dense;
-			border: 1px dashed pink;
+			border: 1px dashed lightblue;
 			margin: 0;
 
 			>[data-type="gecko/grid-layout-item"] {
@@ -34,7 +34,7 @@
 				background-position: center;
 				background-image: none !important; // Maybe move
 				background-color: transparent !important; // Maybe move
-				border: 1px dashed pink; // Maybe move
+				border: 1px dashed lightblue; // Maybe move
 			}
 
 			.editor-block-list__block-edit {
@@ -62,7 +62,7 @@
 
 	.block-list-appender {
 		display: block;
-		padding: 1rem;
+		// padding: 1rem;
 		text-align: center;
 		grid-column: 1 / -1;
 		grid-row-end: span 1;

@@ -66,8 +66,8 @@ export const settings = {
 		},
 	},
 
-	edit({ attributes, setAttributes, className }) {
-		// console.log(arguments);
+	edit({ attributes, setAttributes, className, insertBlocksAfter }) {
+		console.log(arguments);
 		const { opacity, h, w, type, bgMedia, bgMediaUrl, bgColor } = attributes;
 		const styles = {
 			'--background': bgColor,
@@ -106,7 +106,7 @@ export const settings = {
 								} );
 							} }
 							min={ 1 }
-							max={ 7 }
+							max={ 12 }
 						/>
 						<RangeControl
 							label={ __( 'Width' ) }
@@ -117,7 +117,7 @@ export const settings = {
 								} );
 							} }
 							min={ 1 }
-							max={ 7 }
+							max={ 12 }
 						/>
 					</PanelBody>
 					<PanelBody title="Background Settings">

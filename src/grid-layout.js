@@ -32,7 +32,7 @@ export const settings = {
 	attributes: {
 		columns: {
 			type: 'number',
-			default: 5,
+			default: 12,
 		},
 		gap: {
 			type: 'number',
@@ -51,13 +51,14 @@ export const settings = {
 
 	edit( { attributes, setAttributes } ) {
 		const { columns, gap } = attributes;
-		const styles = 'grid-template-columns: repeat(' + columns + ', minmax(100px, 1fr));	grid-auto-rows: minmax(100px, auto); grid-gap:' + gap + 'rem;';
+		// const styles = 'grid-template-columns: repeat(' + columns + ', minmax(100px, 1fr));	grid-auto-rows: minmax(100px, auto); grid-gap:' + gap + 'rem;';
+		const styles = 'grid-gap:' + gap + 'rem;';
 
 		return (
 			<Fragment>
 				<InspectorControls>
 					<PanelBody>
-						<RangeControl
+						{/* <RangeControl
 							label={ __( 'Grid Layout' ) }
 							value={ columns }
 							onChange={ ( nextColumns ) => {
@@ -66,8 +67,8 @@ export const settings = {
 								} );
 							} }
 							min={ 2 }
-							max={ 8 }
-						/>
+							max={ 12 }
+						/> */}
 						<RangeControl
 							label={ __( 'Gap' ) }
 							value={ gap }

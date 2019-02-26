@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.0.0
+ * Version: 1.1
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
@@ -69,7 +69,7 @@ class GeckoGridLayout {
 		$columns = (isset($attributes['columns'])) ? "grid-template-columns:repeat(".$attributes['columns'].", minmax(100px, 1fr));" : "";
 		$rows = (isset($attributes['columns'])) ? "grid-auto-rows: minmax(calc(100vw/".$attributes['columns']."), auto);" : "";
 		$gap = (isset($attributes['gap'])) ? "grid-gap:".$attributes['gap']."rem;" : "";
-		$styles = ' style="'.$columns.$rows.'"';
+		$styles = ' style="'.$columns.$rows.$gap.'"';
 		$class = '"wp-block-gecko-grid-layout"';
 		$index = strpos( $content, $class);
 		if($index === false) {
