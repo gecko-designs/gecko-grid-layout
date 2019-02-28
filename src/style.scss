@@ -22,10 +22,13 @@
 		position: relative;
 		background-size: cover;
 		background-position: center;
-		grid-column-end: span 1;
+		grid-column-end: span 4;
 		grid-row-end: span 1;
 		@media (max-width: $bp-mobile) {
 			grid-column: 1 / -1 !important;
+		}
+		&--image{
+			min-height: 200px;
 		}
 		&--image-content {
 			display: flex;

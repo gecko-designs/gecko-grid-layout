@@ -7,7 +7,8 @@ import {
 	PanelBody,
 	RangeControl,
 	Path,
-	SVG
+	SVG,
+	ResizableBox
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
@@ -60,6 +61,10 @@ export const settings = {
 			type: 'number',
 			default: 4,
 		},
+		bgMinHeight: {
+			type: 'number',
+			default: 200,
+		},
 		bgMedia: {
 			type: 'number',
 		},
@@ -77,8 +82,7 @@ export const settings = {
 		},
 	},
 
-	edit({ attributes, setAttributes, className, insertBlocksAfter }) {
-		console.log(arguments);
+	edit({ attributes, setAttributes, className, insertBlocksAfter,toggleSelection }) {
 		const {
 			opacity,
 			h,
@@ -89,6 +93,7 @@ export const settings = {
 			bgColor,
 			bgColorBrightness,
 			bgColorSlug,
+			bgMinHeight,
 		} = attributes;
 		const styles = {
 			'--background': bgColor,
@@ -100,6 +105,7 @@ export const settings = {
 		};
 		if(type === "image"){
 			delete(styles.backgroundColor);
+			styles.minHeight = bgMinHeight+'px';
 		}
 		if (type === "solid") {
 			delete(styles.backgroundImage);
@@ -121,7 +127,7 @@ export const settings = {
 					</PanelBody>
 					<PanelBody  title="Size Settings">
 						<RangeControl
-							label={ __( 'Height' ) }
+							label={ __( 'Span Rows' ) }
 							value={ h }
 							onChange={ ( next ) => {
 								setAttributes( {
@@ -132,7 +138,7 @@ export const settings = {
 							max={ 12 }
 						/>
 						<RangeControl
-							label={ __( 'Width' ) }
+							label={ __( 'Span Columns' ) }
 							value={ w }
 							onChange={ ( next ) => {
 								setAttributes( {
@@ -144,6 +150,21 @@ export const settings = {
 						/>
 					</PanelBody>
 					<PanelBody title="Background Settings">
+						{
+							(type === 'image') &&
+							<RangeControl
+								label={ __( 'Minimun Height' ) }
+								value={ bgMinHeight }
+								onChange={ ( next ) => {
+									setAttributes( {
+										bgMinHeight: next,
+									} );
+								} }
+								min = "50"
+								max = "600"
+								step = "1"
+							/>
+						}
 						{
 							(type === 'image' || type === 'image-content') &&
 							<MediaUpload

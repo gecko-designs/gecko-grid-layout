@@ -23,13 +23,16 @@
   position: relative;
   background-size: cover;
   background-position: center;
-  grid-column-end: span 1;
+  grid-column-end: span 4;
   grid-row-end: span 1;
 }
 @media (max-width: 480px) {
   .wp-block-gecko-grid-layout__item {
     grid-column: 1/-1 !important;
   }
+}
+.wp-block-gecko-grid-layout__item--image {
+  min-height: 200px;
 }
 .wp-block-gecko-grid-layout__item--image-content {
   display: -webkit-box;

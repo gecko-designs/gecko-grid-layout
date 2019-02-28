@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
@@ -88,12 +88,14 @@ class GeckoGridLayout {
 		$bgColor = (isset($attributes['bgColor'])) ? "--background: ".$attributes['bgColor']."; background-color: ".$attributes['bgColor'].";" : "";
 		$spanColumn = (isset($attributes['w'])) ? "grid-column-end: span ".$attributes['w'].";" : "";
 		$spanRow = (isset($attributes['h'])) ? "grid-row-end: span ".$attributes['h'].";" : "";
+		$minHeight = (isset($attributes['bgMinHeight'])) ? "min-height: ".$attributes['bgMinHeight']."px;" : "";
 		$opacity = (isset($attributes['opacity'])) ? "--opacity: ".$attributes['opacity'].";" : "";
 		$bgColorSlug = (isset($attributes['bgColorSlug'])) ? ' has-'.$attributes['bgColorSlug'].'-background-color' : "";
 		$bgBrightness = (isset($attributes['bgColorBrightness']) && $attributes['bgColorBrightness'] < 130) ? "dark" : "light";
 		$styles = $spanColumn.$spanRow.$bgColor;
 		$styles .= ($type === 'image' || $type === 'image-content') ? $bgMedia : '';
 		$styles .= ($type === 'image-content') ? $opacity : '';
+		$styles .= ($type === 'image') ? $minHeight : '' ;
 		$content = ($type === 'image') ? '' : $content ;
 		$class = 'wp-block-gecko-grid-layout__item wp-block-gecko-grid-layout__item--'.$type;
 		$class .= ' is-'.$bgBrightness.'-background';
