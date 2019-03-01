@@ -113,7 +113,7 @@ class GeckoGridLayout {
 			'bgColorBrightness' => false,
 			'bgMedia' => false,
 			'bgMediaUrl' => false,
-			'bgMinHeight' => false,
+			'minHeight' => false,
 		);
 		// Add a filter to hook into the default args
 		$defaults = apply_filters( 'gecko/grid-layout-item/defaults', $defaults, $attributes );
@@ -134,11 +134,11 @@ class GeckoGridLayout {
 		$styles['background-image'] = ($atts['bgMediaUrl'])?'url('.$atts['bgMediaUrl'].')': false;
 		$styles['grid-column-end'] = ($atts['w'])?'span '.$atts['w']:false;
 		$styles['grid-row-end'] = ($atts['h'])?'span '.$atts['h']:false;
-		$styles['min-height'] = ($atts['bgMinHeight'])?$atts['bgMinHeight'].'px':false;
+		$styles['min-height'] = ($atts['minHeight'])?$atts['minHeight'].'px':false;
 
 		if($atts['type'] === 'solid') unset($styles['background-image']);
 		if($atts['type'] !== 'image-content') unset($styles['--opacity']);
-		if($atts['type'] !== 'image') unset($styles['min-height']);
+		// if($atts['type'] !== 'image') unset($styles['min-height']);
 
 		// Add a filter to hook into the inine styles $args = ($styles, $atts)
 		$styles = apply_filters( 'gecko/grid-layout-item/style', $styles, $attributes );

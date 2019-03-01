@@ -1,4 +1,5 @@
-import TypeSelect from './type-select';
+import TypeSelect from './input-type';
+import Padding from './input-padding';
 import tinycolor from 'tinycolor2';
 /**
  * WordPress dependencies
@@ -45,55 +46,43 @@ export const settings = {
 	},
 
 	attributes: {
-		type:{
-			type: 'string',
-			default: undefined, //solid // image //image-content
-		},
-		opacity: {
-			type: 'number',
-			default: 1,
-		},
-		h: {
-			type: 'number',
-			default: 1,
-		},
-		w: {
-			type: 'number',
-			default: 4,
-		},
-		bgMinHeight: {
-			type: 'number',
-			default: 200,
-		},
-		bgMedia: {
-			type: 'number',
-		},
-		bgMediaUrl: {
-			type: 'string',
-		},
-		bgColor: {
-			type: 'string',
-		},
-		bgColorSlug: {
-			type: 'string',
-		},
-		bgColorBrightness: {
-			type: 'number', //light or dark
-		},
+		type:{ type: 'string',default: undefined, }, //solid, image, image-content
+		// theme:{ type: 'string',default: undefined, }, //light, dark
+		// borderRadius: { type: 'number'},
+		// border: { type: 'object'},
+		// boxShadow: { type: 'object'},
+		padding: { type: 'string'}, // t b l r ui '5px 10px' '5px 10px 5px'
+		// margin: { type: 'object'}, // t b l r ui
+		// alignContent: { type: 'string'}, // normal, start, end, center
+		// justifyContent: { type: 'string'}, // normal, start, end, center
+		// backgroundImage: { type: 'string'}, // process for creating bg images
+		// backgroundRepeat: { type: 'string'}, // no-repeat, repeat, repeat-x, repeat-y
+		// backgroundSize: { type: 'string'}, // cover,contain,auto
+		// backgroundColor: { type: 'string'},
+		h: { type: 'number', default: 1,},
+		w: { type: 'number'},
+		minHeight: { type: 'number', default: 200,},
+		opacity: { type: 'number', default: 1},
+		bgMedia: { type: 'number'},
+		bgMediaUrl: { type: 'string'},
+		bgColor: { type: 'string'},
+		bgColorSlug: { type: 'string'},
+		bgColorBrightness: {type: 'number'},//light or dark
 	},
 
-	edit({ attributes, setAttributes, className, insertBlocksAfter,toggleSelection }) {
+	edit({ attributes, setAttributes, className }) {
 		const {
 			opacity,
 			h,
 			w,
 			type,
+			padding,
 			bgMedia,
 			bgMediaUrl,
 			bgColor,
 			bgColorBrightness,
 			bgColorSlug,
-			bgMinHeight,
+			minHeight,
 		} = attributes;
 		const styles = {
 			'--background': bgColor,
@@ -102,10 +91,10 @@ export const settings = {
 			gridRowEnd: 'span ' + h,
 			backgroundColor: bgColor,
 			backgroundImage: 'url(' + bgMediaUrl + ')',
+			minHeight: minHeight + 'px',
 		};
 		if(type === "image"){
 			delete(styles.backgroundColor);
-			styles.minHeight = bgMinHeight+'px';
 		}
 		if (type === "solid") {
 			delete(styles.backgroundImage);
@@ -125,7 +114,7 @@ export const settings = {
 							value={type}
 						/>
 					</PanelBody>
-					<PanelBody  title="Size Settings">
+					<PanelBody  title="Grid Item">
 						<RangeControl
 							label={ __( 'Span Rows' ) }
 							value={ h }
@@ -149,24 +138,39 @@ export const settings = {
 							max={ 12 }
 						/>
 					</PanelBody>
-					<PanelBody title="Background Settings">
-						{
-							(type === 'image') &&
-							<RangeControl
-								label={ __( 'Minimun Height' ) }
-								value={ bgMinHeight }
-								onChange={ ( next ) => {
-									setAttributes( {
-										bgMinHeight: next,
-									} );
-								} }
-								min = "50"
-								max = "600"
-								step = "1"
-							/>
-						}
-						{
-							(type === 'image' || type === 'image-content') &&
+					<PanelBody title="Style">
+						<Padding 
+							value={ padding }
+							onChange={ ( next ) => {
+								setAttributes( {
+									padding: next,
+								} );
+							} }
+						/>
+						<RangeControl
+							label={ __( 'Minimum Height' ) }
+							value={ minHeight }
+							onChange={ ( next ) => {
+								setAttributes( {
+									minHeight: next,
+								} );
+							} }
+							min = "50"
+							max = "600"
+							step = "1"
+						/>
+						<RangeControl
+							label={ __( 'Opacity' ) }
+							value={ opacity*100 }
+							onChange={ ( next ) => {
+								setAttributes( {
+									opacity: next/100,
+								} );
+							} }
+							min = "0"
+							max = "100"
+							step = "1"
+						/>
 							<MediaUpload
 								onSelect={(value) => {
 									// console.log(value);
@@ -188,10 +192,7 @@ export const settings = {
 									);
 								}}
 							/>
-						}
 						<hr />
-						{
-							(type === 'solid' || type === 'image-content') &&
 							<div>
 								<ColorPalette
 									label='Background Color'
@@ -209,22 +210,6 @@ export const settings = {
 								/>
 								<hr />
 							</div>
-						}
-						{
-							(type === 'image-content') &&
-							<RangeControl
-								label={ __( 'Opacity' ) }
-								value={ opacity }
-								onChange={ ( next ) => {
-									setAttributes( {
-										opacity: next,
-									} );
-								} }
-								min = "0"
-								max = "1"
-								step = "0.1"
-							/>
-						}
 					</PanelBody>
 				</InspectorControls>
 				< div className = {

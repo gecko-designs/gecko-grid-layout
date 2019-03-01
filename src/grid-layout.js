@@ -58,17 +58,6 @@ export const settings = {
 			<Fragment>
 				<InspectorControls>
 					<PanelBody>
-						{/* <RangeControl
-							label={ __( 'Grid Layout' ) }
-							value={ columns }
-							onChange={ ( nextColumns ) => {
-								setAttributes( {
-									columns: nextColumns,
-								} );
-							} }
-							min={ 2 }
-							max={ 12 }
-						/> */}
 						<RangeControl
 							label={ __( 'Gap' ) }
 							value={ gap }
@@ -86,13 +75,13 @@ export const settings = {
 					<InnerBlocks
 						template = {
 							[
-								['gecko/grid-layout-item'],
-								['gecko/grid-layout-item']
+								['gecko/grid-layout-item', {w: 6}],
+								['gecko/grid-layout-item', {w: 6}]
 							]
 						}
 						templateLock={false}
 						allowedBlocks={ ALLOWED_BLOCKS }
-						/>
+					/>
 				</div>
 			</Fragment>
 		);

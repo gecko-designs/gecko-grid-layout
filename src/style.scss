@@ -18,7 +18,7 @@
 
 	&__item {
 		--background: white;
-		--opacity: 0.5;
+		--opacity: 0.75;
 		position: relative;
 		background-size: cover;
 		background-position: center;
@@ -32,9 +32,6 @@
 		}
 		&--image-content {
 			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 1rem;
 			.wp-block-gecko-grid-layout-item {
 				position: relative;
 				padding: 1rem;
