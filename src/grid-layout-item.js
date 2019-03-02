@@ -45,6 +45,10 @@ export const settings = {
 		html: false,
 	},
 
+	styles: [
+		{ name: 'default', label: __( 'Default'), isDefault: true },
+	],
+
 	attributes: {
 		type:{ type: 'string',default: undefined, }, //solid, image, image-content
 		// theme:{ type: 'string',default: undefined, }, //light, dark
@@ -70,13 +74,13 @@ export const settings = {
 		bgColorBrightness: {type: 'number'},//light or dark
 	},
 
-	edit({ attributes, setAttributes, className }) {
+	edit({ attributes, setAttributes, className, insertBlocksAfter }) {
 		const {
 			opacity,
 			h,
 			w,
 			type,
-			padding,
+			// padding,
 			bgMedia,
 			bgMediaUrl,
 			bgColor,
@@ -98,6 +102,7 @@ export const settings = {
 		}
 		if (type === "solid") {
 			delete(styles.backgroundImage);
+			delete(styles.minHeight);
 		}
 		let lightOrDark = 'light';
 		if (bgColorBrightness < 130) lightOrDark = 'dark';
@@ -139,14 +144,15 @@ export const settings = {
 						/>
 					</PanelBody>
 					<PanelBody title="Style">
-						<Padding 
+						{/* <Padding 
 							value={ padding }
 							onChange={ ( next ) => {
 								setAttributes( {
 									padding: next,
 								} );
 							} }
-						/>
+						/> */}
+						{ type !== "solid" &&
 						<RangeControl
 							label={ __( 'Minimum Height' ) }
 							value={ minHeight }
@@ -159,6 +165,8 @@ export const settings = {
 							max = "600"
 							step = "1"
 						/>
+						}
+						{ type === "image-content" &&
 						<RangeControl
 							label={ __( 'Opacity' ) }
 							value={ opacity*100 }
@@ -171,6 +179,8 @@ export const settings = {
 							max = "100"
 							step = "1"
 						/>
+						}
+						{ type !== "solid" &&
 							<MediaUpload
 								onSelect={(value) => {
 									// console.log(value);
@@ -192,6 +202,7 @@ export const settings = {
 									);
 								}}
 							/>
+						}
 						<hr />
 							<div>
 								<ColorPalette
@@ -242,6 +253,7 @@ export const settings = {
 					}
 					{ 
 						(type === 'solid' || (type === 'image-content' && bgMedia)) &&
+						(typeof insertBlocksAfter === 'function') && //This line makes sure styles do not break
 						<InnerBlocks templateLock={ false } />
 					}
 					</div>

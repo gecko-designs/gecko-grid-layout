@@ -13,6 +13,10 @@ A css grid layout block for gutenberg. It allows you to create masonry like cont
 
 == Description ==
 A css grid layout block for gutenberg. It allows you to create masonry like content. This could be a gallery, content flowing in unique ways, or whatever.
+= Filters(Developers) = 
+* gecko/grid-layout-item/defaults
+* gecko/grid-layout-item/class
+* gecko/grid-layout-item/style
 
 == Installation ==
 1. Upload `gecko-grid-layout` to the `/wp-content/plugins/` directory
@@ -26,6 +30,10 @@ A css grid layout block for gutenberg. It allows you to create masonry like cont
 * Initial release
 
 == Upgrade Notice ==
+= 1.0.4 =
+* Added filters for theme developers.
+* Only load script when block is on page.
+* Added custom styles to grid item block for developers.
 = 1.0.3 =
 * Added min-height for background image grid item, so it's not just a little skinny thing.
 = 1.0.2 =

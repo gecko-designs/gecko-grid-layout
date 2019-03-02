@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
@@ -47,13 +47,19 @@ class GeckoGridLayout {
 			[],
 			filemtime( plugin_dir_path(__FILE__) . "dist/style.css" )
 		);
+		// If Post has block then enqueue script
+		add_action( 'the_post', function($post){
+			if(has_block( 'gecko/grid-layout', $post )){
+				wp_enqueue_style('gecko-grid-layout');
+			}
+		} );
 		// Initialize custom blocks
 		// Dynamically import blocks in blocks folder
 		register_block_type(
 			"gecko/grid-layout", 
 			[
 				"render_callback" => [$this, "grid_callback"],
-				"style" => "gecko-grid-layout",
+				// "style" => "gecko-grid-layout",
 				"script" => "",
 				"editor_style" => "gecko-grid-layout-editor",
 				"editor_script" => "gecko-grid-layout-editor",
@@ -65,16 +71,29 @@ class GeckoGridLayout {
 	 * If the block is dynamic you would render the template here.
 	 */
 	public function grid_callback( $attributes, $content ) {
-		// Sort of a hack at the moment.
-		// $columns = (isset($attributes['columns'])) ? "grid-template-columns:repeat(".$attributes['columns'].", minmax(100px, 1fr));" : "";
-		// $rows = (isset($attributes['columns'])) ? "grid-auto-rows: minmax(calc(100vw/".$attributes['columns']."), auto);" : "";
-		$gap = (isset($attributes['gap'])) ? "grid-gap:".$attributes['gap']."rem;" : "";
-		$styles = ' style="'.$gap.'"';
+		// Defaults and attributes
+		// Setting to false unless needed because all styles do not need to be inlined
+		$defaults = array(
+			'gap' => false,
+		);
+		$atts = wp_parse_args( $attributes, $defaults );
+
+		$styles = array();
+		$styles['grid-gap'] = ($atts['gap'])?$atts['gap'].'rem':false;
+		$styleString = '';
+		foreach ($styles as $key => $value) {
+			if($value) $styleString .= $key.':'.$value.';';
+		}
+		
+		// Because we are adding inline styles to an already existing div in the $content we search for it first
 		$class = '"wp-block-gecko-grid-layout"';
 		$index = strpos( $content, $class);
 		if($index === false) {
 			return  $content;
 		}
+		
+		$styles = ' style="'.$styleString.'"';
+		// And then we return the $content with the styles appended at the position of the class.
 		return substr_replace($content, $class.$styles, $index, strlen($class));
 	}
 
@@ -82,26 +101,55 @@ class GeckoGridLayout {
 	 * If the block is dynamic you would render the template here.
 	 */
 	public function grid_item_callback( $attributes, $content ) {
-		// $image = wp_get_attachment_image_url($attributes[bgMedia],'full');
-		$type = (isset($attributes['type']))? $attributes['type'] : false;
-		$bgMedia = (isset($attributes['bgMediaUrl'])) ? "background-image: url(".$attributes['bgMediaUrl'].");": "";
-		$bgColor = (isset($attributes['bgColor'])) ? "--background: ".$attributes['bgColor']."; background-color: ".$attributes['bgColor'].";" : "";
-		$spanColumn = (isset($attributes['w'])) ? "grid-column-end: span ".$attributes['w'].";" : "";
-		$spanRow = (isset($attributes['h'])) ? "grid-row-end: span ".$attributes['h'].";" : "";
-		$minHeight = (isset($attributes['bgMinHeight'])) ? "min-height: ".$attributes['bgMinHeight']."px;" : "";
-		$opacity = (isset($attributes['opacity'])) ? "--opacity: ".$attributes['opacity'].";" : "";
-		$bgColorSlug = (isset($attributes['bgColorSlug'])) ? ' has-'.$attributes['bgColorSlug'].'-background-color' : "";
-		$bgBrightness = (isset($attributes['bgColorBrightness']) && $attributes['bgColorBrightness'] < 130) ? "dark" : "light";
-		$styles = $spanColumn.$spanRow.$bgColor;
-		$styles .= ($type === 'image' || $type === 'image-content') ? $bgMedia : '';
-		$styles .= ($type === 'image-content') ? $opacity : '';
-		$styles .= ($type === 'image') ? $minHeight : '' ;
-		$content = ($type === 'image') ? '' : $content ;
-		$class = 'wp-block-gecko-grid-layout__item wp-block-gecko-grid-layout__item--'.$type;
-		$class .= ' is-'.$bgBrightness.'-background';
-		$class .= $bgColorSlug;
-		// $encoded = json_encode($attributes, JSON_HEX_APOS|JSON_HEX_QUOT);
-		return sprintf('<div class="%s" style="%s">%s</div>',
-		$class, $styles, $content);
+		// Defaults and attributes
+		// Setting to false unless needed because all styles do not need to be inlined
+		$defaults = array(
+			'type' => false,
+			'w' => false,
+			'h' => false,
+			'opacity' => false,
+			'bgColor' => false,
+			'bgColorSlug' => false,
+			'bgColorBrightness' => false,
+			'bgMedia' => false,
+			'bgMediaUrl' => false,
+			'minHeight' => false,
+		);
+		// Add a filter to hook into the default args
+		$defaults = apply_filters( 'gecko/grid-layout-item/defaults', $defaults, $attributes );
+		$atts = wp_parse_args( $attributes, $defaults );
+
+		$classNames = array('wp-block-gecko-grid-layout__item');
+		if($atts['type']) $classNames[] = 'wp-block-gecko-grid-layout__item--'.$atts['type'];
+		if($atts['bgColorSlug']) $classNames[] =  'has-'.$atts['bgColorSlug'].'-background-color';
+		$lightOrDark = ($atts['bgColorBrightness'] < 130) ? "dark" : "light";
+		if($atts['bgColorSlug']) $classNames[] = 'is-'.$lightOrDark.'-background';
+		// Add a filter to hook into classNames
+		$classNames = apply_filters( 'gecko/grid-layout-item/class', $classNames, $attributes );
+
+		$styles = array();
+		$styles['--opacity'] = $atts['opacity'];
+		$styles['--background'] = $atts['bgColor'];
+		$styles['background-color'] = $atts['bgColor'];
+		$styles['background-image'] = ($atts['bgMediaUrl'])?'url('.$atts['bgMediaUrl'].')': false;
+		$styles['grid-column-end'] = ($atts['w'])?'span '.$atts['w']:false;
+		$styles['grid-row-end'] = ($atts['h'])?'span '.$atts['h']:false;
+		$styles['min-height'] = ($atts['minHeight'])?$atts['minHeight'].'px':false;
+
+		if($atts['type'] === 'solid') unset($styles['background-image']);
+		if($atts['type'] !== 'image-content') unset($styles['--opacity']);
+		// if($atts['type'] !== 'image') unset($styles['min-height']);
+
+		// Add a filter to hook into the inine styles $args = ($styles, $atts)
+		$styles = apply_filters( 'gecko/grid-layout-item/style', $styles, $attributes );
+
+		$styleString = '';
+		foreach ($styles as $key => $value) {
+			if($value) $styleString .= $key.':'.$value.';';
+		}
+		
+		$content = ($atts['type'] === 'image') ? '' : $content ;
+
+		return sprintf('<div class="%s" style="%s">%s</div>', implode(' ', $classNames), $styleString, $content);
 	}
 }
