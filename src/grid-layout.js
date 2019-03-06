@@ -57,8 +57,9 @@ export const settings = {
 
 	deprecated: [
 		{
+			migrate() {},
 			save() {
-				return <div><InnerBlocks.Content /></div>;
+				return <InnerBlocks.Content />;
 			},
 		}
 	],
@@ -109,6 +110,6 @@ export const settings = {
 	},
 
 	save() {
-		return <InnerBlocks.Content />;
+		return(<div><InnerBlocks.Content /></div>); // Honestly I don't want to do this but conventions are conventions.
 	},
 };

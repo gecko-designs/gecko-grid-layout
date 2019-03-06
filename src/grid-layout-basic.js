@@ -64,6 +64,13 @@ export const settings = {
 		],
 	},
 
+	deprecated: [{
+		migrate() {},
+		save() {
+			return <InnerBlocks.Content / > ;
+		},
+	}],
+
 	edit({ attributes, setAttributes, className, insertBlocksAfter }) {
 		const {
 			h,
@@ -113,6 +120,6 @@ export const settings = {
 	},
 
 	save() {
-		return <InnerBlocks.Content />;
+		return(<div><InnerBlocks.Content /></div>); // Honestly I don't want to do this but conventions are conventions.
 	},
 };

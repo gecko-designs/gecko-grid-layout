@@ -181,6 +181,7 @@ if(production){
 			{ from: 'dist/editor-styles.css', to: path.resolve(__dirname, 'build/gecko-grid-layout/dist/editor-styles.css') },
 			{ from: 'dist/style.css', to: path.resolve(__dirname, 'build/gecko-grid-layout/dist/style.css') },
 			{ from: 'dist/editor.bundle.js', to: path.resolve(__dirname, 'build/gecko-grid-layout/dist/editor.bundle.js') },
+			{ from: 'dist/public.bundle.js', to: path.resolve(__dirname, 'build/gecko-grid-layout/dist/public.bundle.js') },
 			{ from: 'gecko-grid-layout.php', to: path.resolve(__dirname, 'build/gecko-grid-layout/gecko-grid-layout.php') },
 			{ from: 'readme.txt', to: path.resolve(__dirname, 'build/gecko-grid-layout/readme.txt') },
     	]),

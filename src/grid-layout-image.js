@@ -46,6 +46,7 @@ export const settings = {
 	styles: [
 		{ name: 'default', label: __( 'Default'), isDefault: true },
 		{ name: 'hover', label: __( 'Hover') },
+		{ name: 'no-caption', label: __( 'No Caption') },
 	],
 
 	attributes: {
@@ -75,6 +76,13 @@ export const settings = {
 		]
 	},
 
+	deprecated: [{
+		migrate() {},
+		save() {
+			return <InnerBlocks.Content / > ;
+		},
+	}],
+
 	edit({ attributes, setAttributes, className, insertBlocksAfter }) {
 		const {
 			h,
@@ -93,15 +101,16 @@ export const settings = {
 				<InspectorControls>
 					<PanelBody title="Grid Item">
 						<RangeControl
-							label={ __( 'Height' ) }
-							value={ h }
+							label={ __( 'Minimum Height' ) }
+							value={ minHeight }
 							onChange={ ( next ) => {
 								setAttributes( {
-									h: next,
+									minHeight: next,
 								} );
 							} }
-							min={ 1 }
-							max={ 12 }
+							min = "50"
+							max = "600"
+							step = "1"
 						/>
 						<RangeControl
 							label={ __( 'Width' ) }
@@ -115,16 +124,15 @@ export const settings = {
 							max={ 12 }
 						/>
 						<RangeControl
-							label={ __( 'Minimum Height' ) }
-							value={ minHeight }
+							label={ __( 'Span Rows' ) }
+							value={ h }
 							onChange={ ( next ) => {
 								setAttributes( {
-									minHeight: next,
+									h: next,
 								} );
 							} }
-							min = "50"
-							max = "600"
-							step = "1"
+							min={ 1 }
+							max={ 12 }
 						/>
 					</PanelBody>
 				</InspectorControls>
@@ -184,6 +192,6 @@ export const settings = {
 	},
 
 	save() {
-		return <InnerBlocks.Content />;
+		return(<div><InnerBlocks.Content /></div>); // Honestly I don't want to do this but conventions are conventions.
 	},
 };

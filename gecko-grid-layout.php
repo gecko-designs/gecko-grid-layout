@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.0.5
+ * Version: 1.0.7
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
@@ -67,7 +67,7 @@ class GeckoGridLayout {
 		register_block_type(
 			"gecko/grid-layout", 
 			[
-				"render_callback" => [$this, "grid_callback"],
+				// "render_callback" => [$this, "grid_callback"],
 				// "style" => "gecko-grid-layout",
 				"script" => "",
 				"editor_style" => "gecko-grid-layout-editor",
@@ -81,28 +81,28 @@ class GeckoGridLayout {
 	/**
 	 * If the block is dynamic you would render the template here.
 	 */
-	public function grid_callback( $attributes, $content ) {
-		// Defaults and attributes
-		// Setting to false unless needed because all styles do not need to be inlined
-		$defaults = array(
-			'gap' => false,
-			'className' => false,
-		);
-		$atts = wp_parse_args( $attributes, $defaults );
+	// public function grid_callback( $attributes, $content ) {
+	// 	// Defaults and attributes
+	// 	// Setting to false unless needed because all styles do not need to be inlined
+	// 	$defaults = array(
+	// 		'gap' => false,
+	// 		'className' => false,
+	// 	);
+	// 	$atts = wp_parse_args( $attributes, $defaults );
 
-		$styles = array();
-		$styles['grid-gap'] = ($atts['gap'])?$atts['gap'].'rem':false;
-		$styleString = '';
-		foreach ($styles as $key => $value) {
-			if($value) $styleString .= $key.':'.$value.';';
-		}
+	// 	$styles = array();
+	// 	$styles['grid-gap'] = ($atts['gap'])?$atts['gap'].'rem':false;
+	// 	$styleString = '';
+	// 	foreach ($styles as $key => $value) {
+	// 		if($value) $styleString .= $key.':'.$value.';';
+	// 	}
 		
-		// Because we are adding inline styles to an already existing div in the $content we search for it first
-		$classNames = ["gecko-grid-layout"];
-		if($atts['className']) $classNames[] = $atts['className'];
-		// And then we return the $content with the styles appended at the position of the class.
-		return sprintf('<div class="%s" style="%s">%s</div>', implode(' ', $classNames), $styleString, $content);
-	}
+	// 	// Because we are adding inline styles to an already existing div in the $content we search for it first
+	// 	$classNames = ["gecko-grid-layout"];
+	// 	if($atts['className']) $classNames[] = $atts['className'];
+	// 	// And then we return the $content with the styles appended at the position of the class.
+	// 	return sprintf('<div class="%s" style="%s">%s</div>', implode(' ', $classNames), $styleString, $content);
+	// }
 
 	/**
 	 * If the block is dynamic you would render the template here.
@@ -199,7 +199,9 @@ class GeckoGridLayout {
 		$preview = wp_get_attachment_image_url($atts['imgId'], 'thumbnail');
 		$src = wp_get_attachment_image_url($atts['imgId'], 'large');
 		$srcset = wp_get_attachment_image_srcset( $atts['imgId'], array( 400, 200 ) );
-		$innerContent =  sprintf('<img class="gecko-grid-layout-image__image lazy" src="%s" data-src="%s" data-srcset="%s" />', $preview, $src, $srcset);
+		$alt = get_post_meta( $atts['imgId'], '_wp_attachment_image_alt', true );
+		$title = get_the_title($atts['imgId']);
+		$innerContent =  sprintf('<img class="gecko-grid-layout-image__image lazy" src="%s" data-src="%s" data-srcset="%s" alt="%s" title="%s"/>', $preview, $src, $srcset, $alt, $title);
 		$innerContent .= '<figcaption class="gecko-grid-layout-image__caption">'.$content.'</figcaption>';
 		// $img =  sprintf('<img src="%s" src-set="%s">%s</div>', );
 		return sprintf('<figure class="%s" style="%s">%s</figure>', implode(' ', $classNames), $styleString, $innerContent);
