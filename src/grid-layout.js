@@ -8,7 +8,15 @@ import {
 	InspectorControls,
 	InnerBlocks,
 } from '@wordpress/editor';
-
+// import {createHooks, applyFilters, addFilter} from '@wordpress/hooks';
+// const hooks = createHooks();
+// const templates = hooks.applyFilters('gecko.grid-layout.templates', ['prev']);
+// hooks.addFilter('gecko.grid-layout.templates', 'gecko/grid-layout', (a) => {
+// 	a.push['test'];
+// 	console.log('test');
+// 	return a;
+// });
+// console.log(templates);
 /**
  * Allowed blocks constant is passed to InnerBlocks precisely as specified here.
  * The contents of the array should never change.
@@ -18,7 +26,7 @@ import {
  * @constant
  * @type {string[]}
 */
-const ALLOWED_BLOCKS = ['gecko/grid-layout-item'];
+const ALLOWED_BLOCKS = ['gecko/grid-layout-item', 'gecko/grid-layout-image'];
 
 export const name = 'gecko/grid-layout';
 
@@ -47,13 +55,23 @@ export const settings = {
 		html: false,
 	},
 
-	deprecated: [],
+	deprecated: [
+		{
+			save() {
+				return <div><InnerBlocks.Content /></div>;
+			},
+		}
+	],
 
-	edit( { attributes, setAttributes } ) {
+	styles: [
+		{ name: 'default', label: __( 'Default'), isDefault: true },
+		{ name: 'no-gap', label: __( 'No Gap') },
+	],
+
+	edit( { attributes, setAttributes, insertBlocksAfter } ) {
 		const { columns, gap } = attributes;
 		// const styles = 'grid-template-columns: repeat(' + columns + ', minmax(100px, 1fr));	grid-auto-rows: minmax(100px, auto); grid-gap:' + gap + 'rem;';
 		const styles = 'grid-gap:' + gap + 'rem;';
-
 		return (
 			<Fragment>
 				<InspectorControls>
@@ -72,26 +90,25 @@ export const settings = {
 					</PanelBody>
 				</InspectorControls>
 				<div className="wp-block-gecko-grid-layout-editor" data-passthru={styles} data-grid={columns}>
-					<InnerBlocks
-						template = {
-							[
-								['gecko/grid-layout-item', {w: 6}],
-								['gecko/grid-layout-item', {w: 6}]
-							]
-						}
-						templateLock={false}
-						allowedBlocks={ ALLOWED_BLOCKS }
-					/>
+					{ 
+						typeof insertBlocksAfter === 'function' &&
+						<InnerBlocks
+							template = {
+								[
+									['gecko/grid-layout-image', {w: 6}],
+									['gecko/grid-layout-image', {w: 6}],
+								]
+							}
+							templateLock={false}
+							allowedBlocks={ ALLOWED_BLOCKS }
+						/>
+					}
 				</div>
 			</Fragment>
 		);
 	},
 
 	save() {
-		return (
-			<div>
-				<InnerBlocks.Content />
-			</div>
-		);
+		return <InnerBlocks.Content />;
 	},
 };

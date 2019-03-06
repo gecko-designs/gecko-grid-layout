@@ -86,6 +86,7 @@ const settings = {
 	target: 'web',
 	entry: {
 		editor : path.resolve(__dirname, 'src/index.js'),
+		public : path.resolve(__dirname, 'src/public.js'),
 		style : path.resolve(__dirname, 'src/style.scss'),
 		'editor-styles': path.resolve(__dirname, 'src/editor.scss'),
 	},

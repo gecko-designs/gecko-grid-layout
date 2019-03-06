@@ -1,6 +1,6 @@
 import TypeSelect from './input-type';
-import Padding from './input-padding';
 import tinycolor from 'tinycolor2';
+
 /**
  * WordPress dependencies
  */
@@ -13,6 +13,9 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
+import {
+	createBlock,
+} from '@wordpress/blocks';
 import {
 	InspectorControls,
 	InnerBlocks,
@@ -28,7 +31,7 @@ import {
 export const name = 'gecko/grid-layout-item';
 
 export const settings = {
-	title: __( 'Item' ),
+	title: __( 'Experimental' ),
 
 	parent: ['gecko/grid-layout'],
 
@@ -47,6 +50,7 @@ export const settings = {
 
 	styles: [
 		{ name: 'default', label: __( 'Default'), isDefault: true },
+		{ name: 'hover', label: __( 'Hover') },
 	],
 
 	attributes: {
@@ -55,7 +59,7 @@ export const settings = {
 		// borderRadius: { type: 'number'},
 		// border: { type: 'object'},
 		// boxShadow: { type: 'object'},
-		padding: { type: 'string'}, // t b l r ui '5px 10px' '5px 10px 5px'
+		// padding: { type: 'string'}, // t b l r ui '5px 10px' '5px 10px 5px'
 		// margin: { type: 'object'}, // t b l r ui
 		// alignContent: { type: 'string'}, // normal, start, end, center
 		// justifyContent: { type: 'string'}, // normal, start, end, center
@@ -74,13 +78,40 @@ export const settings = {
 		bgColorBrightness: {type: 'number'},//light or dark
 	},
 
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: ['gecko/grid-layout-image', 'gecko/grid-layout-basic'],
+				transform: (attributes, innerBlocks) => {
+					// It appears that innerBlocks will be added in the future.
+					const {h, w, imgId, imgUrl} = attributes;
+					return createBlock('gecko/grid-layout-item', {
+						h: h,
+						w: w,
+						bgMedia:imgId,
+						bgMediaUrl: imgUrl,
+					}, innerBlocks);
+				},
+			}
+		]
+	},
+
+	deprecated: [
+		{
+			save() {
+				return <div><InnerBlocks.Content /></div>;
+			},
+		}
+	],
+
 	edit({ attributes, setAttributes, className, insertBlocksAfter }) {
 		const {
 			opacity,
 			h,
 			w,
 			type,
-			// padding,
+			padding,
 			bgMedia,
 			bgMediaUrl,
 			bgColor,
@@ -144,15 +175,6 @@ export const settings = {
 						/>
 					</PanelBody>
 					<PanelBody title="Style">
-						{/* <Padding 
-							value={ padding }
-							onChange={ ( next ) => {
-								setAttributes( {
-									padding: next,
-								} );
-							} }
-						/> */}
-						{ type !== "solid" &&
 						<RangeControl
 							label={ __( 'Minimum Height' ) }
 							value={ minHeight }
@@ -165,21 +187,6 @@ export const settings = {
 							max = "600"
 							step = "1"
 						/>
-						}
-						{ type === "image-content" &&
-						<RangeControl
-							label={ __( 'Opacity' ) }
-							value={ opacity*100 }
-							onChange={ ( next ) => {
-								setAttributes( {
-									opacity: next/100,
-								} );
-							} }
-							min = "0"
-							max = "100"
-							step = "1"
-						/>
-						}
 						{ type !== "solid" &&
 							<MediaUpload
 								onSelect={(value) => {
@@ -223,13 +230,8 @@ export const settings = {
 							</div>
 					</PanelBody>
 				</InspectorControls>
-				< div className = {
-					`wp-block-gecko-grid-layout-editor__item ${type} ${attributes.className} has-${bgColorSlug}-background-color is-${lightOrDark}-background`
-				}
-				style = {
-					styles
-				} >
-					<div className = "wp-block-gecko-grid-layout-editor__wrap">
+				<div className={`gecko-grid-layout-editor-styles`} style={styles}></div>
+				<div className={`wp-block-gecko-grid-layout-editor__wrap${type} ${attributes.className} has-${bgColorSlug}-background-color is-${lightOrDark}-background`}>
 					{!type && <TypeSelect 
 						onSelect = {(next) => {
 								setAttributes({
@@ -257,12 +259,11 @@ export const settings = {
 						<InnerBlocks templateLock={ false } />
 					}
 					</div>
-				</div>
 			</Fragment>
 		);
 	},
 
 	save() {
-		return <div><InnerBlocks.Content /></div>;
+		return <InnerBlocks.Content />;
 	},
 };

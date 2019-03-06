@@ -1,4 +1,6 @@
 @import "variables.scss";
+@import "type-select.scss";
+@import "trbl.scss";
 .wp-block-gecko-grid-layout-editor {
 	>.editor-inner-blocks {
 		>.editor-block-list__layout {
@@ -11,7 +13,9 @@
 			border: 1px dashed lightblue;
 			margin: 0;
 
-			>[data-type="gecko/grid-layout-item"] {
+			>[data-type="gecko/grid-layout-item"],
+			>[data-type="gecko/grid-layout-basic"],
+			>[data-type="gecko/grid-layout-image"] {
 				margin-left: 0 !important;
 				margin-right: 0 !important;
 				grid-column-end: span 1;
@@ -72,123 +76,28 @@
 			background-color: #f3f3f3;
 		}
 	}
-
-	&__item {
-		padding: 1rem;
-		position: relative;
-		background-size: cover;
-		background-position: center;
-		height: 100%;
-		width: 100%;
-	}
-	.image & {
-		&__wrap {
-			background-color: white !important;
-		}
-	}
-	.image-content {
-		--background: white;
-		--opacity: 0.5;
-	}
-	.image-content & {
-		&__wrap {
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			height: 100%;
-			z-index: 1;
-
-			&:before {
-				position: absolute;
-				display: block;
-				content: '';
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				opacity: 0.75;
-				opacity: var(--opacity);
-				z-index: -1;
-				background-color: white;
-				background-color: var(--background);
-			}
-		}
-	}
 }
-.wp-block-gecko-grid-layout-type-select {
+
+.gecko-grid-layout-editor-styles {
+	display: none !important;
+}
+
+.gecko-grid-layout-basic,
+.gecko-grid-layout-image,
+.gecko-grid-layout-item {
 	display: flex;
-	flex-wrap: wrap;
-	&__item {
-		font-size: 0.75rem;
-		line-height: 1.2em;
-		display: flex;
-		flex-direction: column;
-		text-align: center;
-		justify-content: center;
-		align-items: center;
-		padding: 0.5rem;
-		flex-basis: 90px;
-		flex-grow: 0;
-		border: 1px solid #f0f0f0;
-		cursor: pointer;
-		&:hover{
-			background-color: #FAFAFA;
-		}
-		&--selected {
-			background-color: #F5F5F5;
-		}
-	}
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+	margin: 0;
 }
-.gecko-trbl {
-	display: grid;
-	grid-template-rows: repeat(3, minmax(1px, 1fr));
-	grid-template-columns: repeat(7, minmax(1px, 1fr));
-	grid-template-areas: 
-		"tl tl t t t tr tr"
-		"l l l c r r r "
-		"bl bl b b b br br"
-	;
-	&__input {
-		display: flex;
-		input{
-			width: 100%;
-		}
-		&--t{grid-area: t;}
-		&--r{grid-area: r;}
-		&--b{grid-area: b;}
-		&--l{grid-area: l;}
-	}
-	&__lock {
-		grid-area: c;
-		background-color: dimgray;
-		position: relative;
-		&__x {
-			display: block;
-			width: 100%;
-			height: 2px;
-			background-color: black;
-			position: absolute;
-			top: calc(50% - 1px);
-			&.true{background-color: red;}
-		}
-		&__y {
-			display: block;
-			width: 2px;
-			height: 100%;
-			background-color: black;
-			position: absolute;
-			left: calc(50% - 1px);
-			&.true{background-color: red;}
-		}
-		&__xy {
-			display: block;
-			width: 10px;
-			height: 10px;
-			background-color: grey;
-			position: absolute;
-			top: calc(50% - 5px);
-			left: calc(50% - 5px);
-			&.true{background-color: red;}
+
+.is-dragging-components-draggable {
+	.gecko-grid-layout-image {
+		&.is-style-hover {
+			.gecko-grid-layout-image__caption {
+				opacity: 1 !important;
+			}
 		}
 	}
 }

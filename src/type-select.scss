@@ -1,0 +1,25 @@
+@import "variables.scss";
+.wp-block-gecko-grid-layout-type-select {
+	display: flex;
+	flex-wrap: wrap;
+	&__item {
+		font-size: 0.75rem;
+		line-height: 1.2em;
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		padding: 0.5rem;
+		flex-basis: 90px;
+		flex-grow: 0;
+		border: 1px solid #f0f0f0;
+		cursor: pointer;
+		&:hover{
+			background-color: #FAFAFA;
+		}
+		&--selected {
+			background-color: #F5F5F5;
+		}
+	}
+}
