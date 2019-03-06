@@ -1,52 +1,73 @@
 # Gecko Grid Layout #
 
-Gecko grid is designed to be an extendable framework for theme developers. You can extend grid to do lots of really cool things!
+Gecko grid is designed to be an extendable framework for theme developers. It works with gutenberg compatible themes, but some themes may offer extended features.
 
-## Roadmap ##
+## Compatibility ##
 
-Originally I wanted to add all kinds of features to make it where you could do what ever you want, but that's a whole lot of inline styles and themes that might not always look good. So the goal is to keep it bare bones for developers. If there is something fancy that needs to happen within the block, new styles can be created for the block and the developer can change the appearance of those.
+Supports major evergreen browsers.
+
+* Chrome
+* Firefox
+* Safari
+* Edge
+
+*IE - not compatible. It's time to let it go...
+
+## Why use it? ##
+
+There are some frustrations that come with gutenberg. One of those is inline-styles. Not bashing the idea, but what happens when you change themes later? Somehow you have to clean that up. With that in mind, this plugin works to keep inline styles to an absolute minimum, but utilizing the render_callback feature for blocks. Styles can be added or omitted here, but we'll talk about that later. The point it, as a theme developer you should be able to extend blocks and choose how they look reguardless of the markup that was saved in the DB.
 
 ### Features ###
 
-* Add Image Block - Background images are not as accessible. Image blocks can have html captions.
-* Add Content Block - This is to primarily depricate the item block. The content block will be able to have background-images
-* Create backgroundImage Editor
-* Grid Gap to Increment,Unit format
+* Image Block - Lazy load image
+* Basic Block - Content only block.
 * Grid Layout Templates - Allow theme developers to create custom templates that can be chosen from by users.
-* Add Video Block - Not sure the best way to display this
-
-## Filters ##
-
-This filters allow you to manipulate the output:
-
-* gecko/grid-layout-item/defaults
-* gecko/grid-layout-item/class - Used to modify classes attached to the block-item
-* gecko/grid-layout-item/style - Used to modify inline styles attached to the block-item
-
 
 ## Styles ##
 
-Creating new styles for a grid item
+The grid and the grid items all support styles. 
 
-```
+### Defaults ###
+* Grid
+	* Default : .is-style-default
+	* No Gap : .is-style-no-gap
+* Image
+	* Default : .is-style-default
+	* Hover : .is-style-hover
+	* No Caption : .is-style-no-caption
+* Basic
+	* Default : .is-style-default
+
+### Usage ##
+
+This approach allows the theme to have special styles for every type of item if it wants. For instance you might want a dark overlay as well as the default overlay for the image block. You could create a new style like this. I recommed using [enqueue_block_editor_assets](https://developer.wordpress.org/reference/hooks/enqueue_block_editor_assets/) to include the script.
+
+```javascript
 window.wp.domReady(function () {
 	// To add a new style to the grid item you can.
-	window.wp.blocks.registerBlockStyle('gecko/grid-layout-item', [
+	window.wp.blocks.registerBlockStyle('gecko/grid-layout-image', [
 		{
-			name: 'reveal-on-hover',
-			label: 'Reveal on Hover'
+			name: 'dark-overlay',
+			label: 'Dark Overlay'
 		},
 	]);
-	// A style can be unregistered as well with something like this:
-	// window.wp.blocks.unregisterBlockStyle('gecko/grid-layout-item, 'reveal-on-hover');
 });
 ```
 
+Or maybe your theme does not support a default style like hover.
+
+```javascript
+window.wp.domReady(function () {
+	window.wp.blocks.unregisterBlockStyle('gecko/grid-layout-item', 'hover');
+});
+```
+
+
 ## Grid Layout Templates ##
 
-Adding new templates
+Because grid can be a bit confusing. Layout templates are a convenient way to help the user create grid layouts. To add a new template enqueue a script similar to the one below in [enqueue_block_editor_assets](https://developer.wordpress.org/reference/hooks/enqueue_block_editor_assets/)
 
-```
+```javascript
 window.wp.domReady( function() {
 	// Adding the filter
 	window.wp.hooks.addFilter(
@@ -71,3 +92,25 @@ window.wp.domReady( function() {
 	}
 });
 ```
+
+## PHP Filters ##
+
+This filters allow you to manipulate the output:
+
+* gecko/grid-layout-image/defaults
+* gecko/grid-layout-image/class - Used to modify classes attached to the block-item
+* gecko/grid-layout-image/style - Used to modify inline styles attached to the block-item
+
+```php
+<?php
+	// Documentation coming
+?>
+```
+
+## Roadmap ##
+
+Originally I wanted to add all kinds of features to make it where you could do what ever you want, but that's a whole lot of inline styles and themes that might not always look good. So the goal is to keep it bare bones for developers. If there is something fancy that needs to happen within the block, new styles can be created for the block and the developer can change the appearance of those.
+
+* Add Advanced Block - This is to primarily depricate the item block. The content block will be able to have background-images
+* Create backgroundImage Editor
+* Add Video Block - Not sure the best way to display this
