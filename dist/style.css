@@ -8,13 +8,13 @@
 @media (max-width: 960px) {
   .wp-block-gecko-grid-layout {
     grid-template-columns: minmax(0px, 1fr) !important;
-    grid-auto-rows: minmax(calc(100vw/2), auto) !important;
+    grid-auto-rows: minmax(1px, auto) !important;
   }
 }
 @media (max-width: 480px) {
   .wp-block-gecko-grid-layout {
     grid-template-columns: minmax(0px, 1fr) !important;
-    grid-auto-rows: minmax(calc(100vw/2), auto) !important;
+    grid-auto-rows: minmax(1px, auto) !important;
   }
 }
 .wp-block-gecko-grid-layout__item {

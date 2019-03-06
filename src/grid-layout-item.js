@@ -31,7 +31,7 @@ import {
 export const name = 'gecko/grid-layout-item';
 
 export const settings = {
-	title: __( 'Experimental' ),
+	title: __( 'Experimental (Do Not Use)' ),
 
 	parent: ['gecko/grid-layout'],
 

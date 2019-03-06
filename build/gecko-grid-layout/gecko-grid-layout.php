@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.0.7
+ * Version: 1.0.8
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
@@ -127,9 +127,9 @@ class GeckoGridLayout {
 		$defaults = apply_filters( 'gecko/grid-layout-item/defaults', $defaults, $attributes );
 		$atts = wp_parse_args( $attributes, $defaults );
 
-		$classNames = array('gecko-grid-layout__item gecko-grid-layout-item');
+		$classNames = array('wp-block-gecko-grid-layout__item gecko-grid-layout-item');
 		if($atts['className']) $classNames[] = $atts['className'];
-		if($atts['type']) $classNames[] = 'wp-block-gecko-grid-layout__item--'.$atts['type'];
+		if($atts['type']) $classNames[] = 'wp-block-wp-block-gecko-grid-layout__item--'.$atts['type'];
 		if($atts['bgColorSlug']) $classNames[] =  'has-'.$atts['bgColorSlug'].'-background-color';
 		$lightOrDark = ($atts['bgColorBrightness'] < 130) ? "dark" : "light";
 		if($atts['bgColorSlug']) $classNames[] = 'is-'.$lightOrDark.'-background';
@@ -180,7 +180,7 @@ class GeckoGridLayout {
 		$defaults = apply_filters( 'gecko/grid-layout-image/defaults', $defaults, $attributes );
 		$atts = wp_parse_args( $attributes, $defaults );
 
-		$classNames = array('gecko-grid-layout__item gecko-grid-layout-image');
+		$classNames = array('wp-block-gecko-grid-layout__item gecko-grid-layout-image');
 		if($atts['className']) $classNames[] = $atts['className'];
 		// Add a filter to hook into classNames
 		$classNames = apply_filters( 'gecko/grid-layout-image/class', $classNames, $attributes );
@@ -222,7 +222,7 @@ class GeckoGridLayout {
 		$defaults = apply_filters( 'gecko/grid-layout-basic/defaults', $defaults, $attributes );
 		$atts = wp_parse_args( $attributes, $defaults );
 
-		$classNames = array('gecko-grid-layout__item gecko-grid-layout-item');
+		$classNames = array('wp-block-gecko-grid-layout__item gecko-grid-layout-item');
 		if($atts['className']) $classNames[] = $atts['className'];
 		// Add a filter to hook into classNames
 		$classNames = apply_filters( 'gecko/grid-layout-basic/class', $classNames, $attributes );

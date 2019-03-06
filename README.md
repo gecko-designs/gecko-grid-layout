@@ -41,3 +41,33 @@ window.wp.domReady(function () {
 	// window.wp.blocks.unregisterBlockStyle('gecko/grid-layout-item, 'reveal-on-hover');
 });
 ```
+
+## Grid Layout Templates ##
+
+Adding new templates
+
+```
+window.wp.domReady( function() {
+	// Adding the filter
+	window.wp.hooks.addFilter(
+		'gecko.grid-layout.templates',
+		'<namespace>',
+		addNewGridTemplates
+	);
+	// Our filter function
+	function addNewGridTemplates(templates) {
+		templates.push({
+			label: 'Default',
+			layout: [
+				['gecko/grid-layout-basic', {
+					w: 6
+				}],
+				['gecko/grid-layout-basic', {
+					w: 6
+				}],
+			]
+		});
+		return templates;
+	}
+});
+```

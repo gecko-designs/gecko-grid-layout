@@ -4,7 +4,7 @@ Donate link: https://dwayneparton.com
 Tags: gutenberg, block, grid, grid-layout
 Requires at least: 5.0
 Tested up to: 5.1
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,6 +35,9 @@ Grid Layout is a tool for developers. Themes can determine the styles that are a
 1. No questions have been asked...let\'s change that.
 
 == Changelog ==
+= 1.0.8 =
+* Grid Layout Templates - Theme developers can now add predefined layouts to make it easier to use grid layout
+* JS filter for updating grid layout templates - gecko.grid-layout.templates
 = 1.0.7 =
 * Title and Alt atributes for images
 * No Caption style for images
@@ -61,6 +64,8 @@ Grid Layout is a tool for developers. Themes can determine the styles that are a
 * Initial release
 
 == Upgrade Notice ==
+= 1.0.8 =
+* Grid Layout Templates
 = 1.0.7 =
 * Added No Caption style to image
 = 1.0.6 =
