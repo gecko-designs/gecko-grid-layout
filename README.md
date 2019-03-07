@@ -104,9 +104,8 @@ This filters allow you to manipulate the output:
 ### Basic ###
 Changing the basic block's class names
 ```php
-// Change class names
-add_filter('gecko/grid-layout-basic/class', 'custom_theme_change_class', 10, 2);
-function custom_theme_change_class($classNames, $attributes){
+add_filter('gecko/grid-layout-basic/class', 'custom_grid_basic_class', 10, 2);
+function custom_grid_basic_class($classNames, $attributes){
 	$key = array_search('gecko-grid-layout-item', $classNames); 
 	$classNames[$key] = 'custom-grid-layout-item';
 	return $classNames;
@@ -114,18 +113,16 @@ function custom_theme_change_class($classNames, $attributes){
 ```
 Changing the basic block's inline styles
 ```php
-// Change styles
-add_filter('gecko/grid-layout-basic/style', 'custom_theme_change_class', 10, 2);
-function custom_theme_change_class($styles, $attributes){
+add_filter('gecko/grid-layout-basic/style', 'custom_grid_basic_style', 10, 2);
+function custom_grid_basic_style($styles, $attributes){
 	$styles['grid-column-end'] = 'span 5';
 	return $styles;
 }
 ```
 Changing the basic block's html output
 ```php
-// Change basic layout
-add_filter('gecko/grid-layout-basic/output', 'custom_theme_change_class', 10, 5);
-function custom_theme_change_class($output, $class, $style, $content, $attributes ){
+add_filter('gecko/grid-layout-basic/output', 'custom_grid_basic_output', 10, 5);
+function custom_grid_basic_output($output, $class, $style, $content, $attributes ){
 	$template = '<div class="%s" style="%s">%s</div>';
 	$output = sprintf($template, $class, $style, $content);
 	return $output;
@@ -135,9 +132,8 @@ function custom_theme_change_class($output, $class, $style, $content, $attribute
 ### Image ###
 Changing the image block's class names
 ```php
-// Change class names
-add_filter('gecko/grid-layout-image/class', 'custom_theme_change_class', 10, 2);
-function custom_theme_change_class($classNames, $attributes){
+add_filter('gecko/grid-layout-image/class', 'custom_grid_image_class', 10, 2);
+function custom_grid_image_class($classNames, $attributes){
 	$key = array_search('gecko-grid-layout-item', $classNames); 
 	$classNames[$key] = 'custom-grid-layout-item';
 	return $classNames;
@@ -145,28 +141,25 @@ function custom_theme_change_class($classNames, $attributes){
 ```
 Changing the image block's inline styles
 ```php
-// Change styles
-add_filter('gecko/grid-layout-image/style', 'custom_theme_change_class', 10, 2);
-function custom_theme_change_class($styles, $attributes){
+add_filter('gecko/grid-layout-image/style', 'custom_grid_image_style', 10, 2);
+function custom_grid_image_style($styles, $attributes){
 	$styles['grid-column-end'] = 'span 5';
 	return $styles;
 }
 ```
-Changing the image block's <img /> html output
+Changing the image block's img html output
 ```php
-// Change basic layout
-add_filter('gecko/grid-layout-image/output/image', 'custom_theme_change_class', 10, 7);
-function custom_theme_change_class($output, $preview, $src, $srcset, $alt, $title, $attributes  ){
+add_filter('gecko/grid-layout-image/output/image', 'custom_grid_image_img', 10, 7);
+function custom_grid_image_img($output, $preview, $src, $srcset, $alt, $title, $attributes  ){
 	$template = '<img class="gecko-grid-layout-image__image lazy" src="%s" data-src="%s" data-srcset="%s" alt="%s" title="%s"/>';
 	$output = sprintf($template, $preview, $src, $srcset, $alt, $title);;
 	return $output;
 }
 ```
-Changing the image block's <figcaption><figcaption/> html output
+Changing the image block's figcaption html output
 ```php
-// Change basic layout
-add_filter('gecko/grid-layout-image/output/caption', 'custom_theme_change_class', 10, 7);
-function custom_theme_change_class($output, $content, $attributes ){
+add_filter('gecko/grid-layout-image/output/caption', 'custom_grid_image_caption', 10, 7);
+function custom_grid_image_caption($output, $content, $attributes ){
 	$template = '<figcaption class="gecko-grid-layout-image__caption">%s</figcaption>';
 	$output = sprintf($template, $content, $attributes);
 	return $output;
@@ -174,9 +167,8 @@ function custom_theme_change_class($output, $content, $attributes ){
 ```
 Changing the basic block's html output
 ```php
-// Change basic layout
-add_filter('gecko/grid-layout-image/output', 'custom_theme_change_class', 10, 6);
-function custom_theme_change_class($output, $class, $style, $image, $caption, $attributes  ){
+add_filter('gecko/grid-layout-image/output', 'custom_grid_image_output', 10, 6);
+function custom_grid_image_output($output, $class, $style, $image, $caption, $attributes  ){
 	$template = '<figure class="%s" style="%s">%s%s</figure>';
 	$output = sprintf($template, $class, $style, $image, $caption, $attributes);
 	return $output;
