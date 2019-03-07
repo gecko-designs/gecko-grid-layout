@@ -23,23 +23,25 @@ import {
 import {
 	select
 } from '@wordpress/data';
-import deprecated from '@wordpress/deprecated';
 
 export const name = 'gecko/grid-layout-item';
 
 export const settings = {
-	title: __('Item (deprecated)'),
+	title: __( 'Experimental (Do Not Use)' ),
 
 	parent: ['gecko/grid-layout'],
 
 	icon: <SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><Path fill="none" d="M0 0h24v24H0V0z" /><Path d="M11.99 18.54l-7.37-5.73L3 14.07l9 7 9-7-1.63-1.27zM12 16l7.36-5.73L21 9l-9-7-9 7 1.63 1.27L12 16zm0-11.47L17.74 9 12 13.47 6.26 9 12 4.53z" /></SVG>,
 
-	description: __('This block is deprecated. Please use basic or image block instead.'),
+	description: __( 'Advanced grid item for creating complex content.' ),
 
 	category: 'common',
 
 	supports: {
-		inserter: false,
+		className: true,
+		inserter: true,
+		reusable: false,
+		html: false,
 	},
 
 	styles: [
@@ -49,6 +51,18 @@ export const settings = {
 
 	attributes: {
 		type:{ type: 'string',default: undefined, }, //solid, image, image-content
+		// theme:{ type: 'string',default: undefined, }, //light, dark
+		// borderRadius: { type: 'number'},
+		// border: { type: 'object'},
+		// boxShadow: { type: 'object'},
+		// padding: { type: 'string'}, // t b l r ui '5px 10px' '5px 10px 5px'
+		// margin: { type: 'object'}, // t b l r ui
+		// alignContent: { type: 'string'}, // normal, start, end, center
+		// justifyContent: { type: 'string'}, // normal, start, end, center
+		// backgroundImage: { type: 'string'}, // process for creating bg images
+		// backgroundRepeat: { type: 'string'}, // no-repeat, repeat, repeat-x, repeat-y
+		// backgroundSize: { type: 'string'}, // cover,contain,auto
+		// backgroundColor: { type: 'string'},
 		h: { type: 'number', default: 1,},
 		w: { type: 'number'},
 		minHeight: { type: 'number', default: 200,},
@@ -60,34 +74,32 @@ export const settings = {
 		bgColorBrightness: {type: 'number'},//light or dark
 	},
 
-	deprecated: [
-		{
-			migrate(attributes, innerBlocks) {
-				// const selected = select('core/editor').getSelectedBlock(); // because innerBlocks does not work.
-				// It appears that innerBlocks will be added in the future.
-				const {
-					h,
-					w,
-					bgMedia,
-					bgMediaUrl,
-					minHeight
-				} = attributes;
-				if (bgMedia) {
-					return createBlock('gecko/grid-layout-image', {
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: ['gecko/grid-layout-image', 'gecko/grid-layout-basic'],
+				transform: (attributes, innerBlocks) => {
+					const selected = select('core/editor').getSelectedBlock(); // because innerBlocks does not work.
+					// It appears that innerBlocks will be added in the future.
+					const {h, w, imgId, imgUrl, mediaId, mediaUrl, minHeight} = attributes;
+					return createBlock('gecko/grid-layout-item', {
 						h: h,
 						w: w,
-						imgId: bgMedia,
-						imgUrl: bgMediaUrl,
+						bgMedia: imgId || mediaId,
+						bgMediaUrl: imgUrl || mediaUrl,
 						minHeight: minHeight,
-					}, innerBlocks);
-				}
-				return createBlock('gecko/grid-layout-basic', {
-					h: h,
-					w: w,
-				}, innerBlocks);
-			},
+					}, selected.innerBlocks);
+				},
+			}
+		]
+	},
+
+	deprecated: [
+		{
+			migrate() {},
 			save() {
-				return(<InnerBlocks.Content />);
+				return <InnerBlocks.Content />;
 			},
 		}
 	],
@@ -106,10 +118,6 @@ export const settings = {
 			bgColorSlug,
 			minHeight,
 		} = attributes;
-		deprecated('Grid Layout Idem', {
-			alternative: 'Basic or Image',
-			plugin: 'Gecko Grid Layout',
-		});
 		const styles = {
 			'--background': bgColor,
 			'--opacity': opacity,

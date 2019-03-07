@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
