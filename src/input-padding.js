@@ -115,7 +115,7 @@ export default class Trlb extends React.Component {
 	render() {
 		const {value, onChange} = this.props;
 		const {values} = this.state;
-		console.log(this.state);
+		// console.log(this.state);
 		// const value = '5% 19px'
 		const v = values;
 		const tldr = [

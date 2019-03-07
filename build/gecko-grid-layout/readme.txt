@@ -35,6 +35,8 @@ Grid Layout is a tool for developers. Themes can determine the styles that are a
 1. No questions have been asked...let\'s change that.
 
 == Changelog ==
+= 1.0.9 =
+* Transforms now move innerblocks
 = 1.0.8 =
 * Grid Layout Templates - Theme developers can now add predefined layouts to make it easier to use grid layout
 * JS filter for updating grid layout templates - gecko.grid-layout.templates

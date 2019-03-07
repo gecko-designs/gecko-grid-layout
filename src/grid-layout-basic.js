@@ -17,6 +17,9 @@ import {
 	InspectorControls,
 	InnerBlocks,
 } from '@wordpress/editor';
+import {
+	select
+} from '@wordpress/data';
 
 export const name = 'gecko/grid-layout-basic';
 
@@ -53,12 +56,13 @@ export const settings = {
 				type: 'block',
 				blocks: ['gecko/grid-layout-item', 'gecko/grid-layout-image'],
 				transform: (attributes, innerBlocks) => {
+					const selected = select('core/editor').getSelectedBlock(); // because innerBlocks does not work.
 					// It appears that innerBlocks will be added in the future.
 					const {h, w} = attributes;
 					return createBlock('gecko/grid-layout-basic', {
 						h: h,
 						w: w,
-					}, innerBlocks);
+					}, selected.innerBlocks);
 				},
 			},	
 		],
@@ -85,22 +89,22 @@ export const settings = {
 				<InspectorControls>
 					<PanelBody title="Grid Item">
 						<RangeControl
-							label={ __( 'Height' ) }
-							value={ h }
+							label={ __( 'Width' ) }
+							value={ w }
 							onChange={ ( next ) => {
 								setAttributes( {
-									h: next,
+									w: next,
 								} );
 							} }
 							min={ 1 }
 							max={ 12 }
 						/>
 						<RangeControl
-							label={ __( 'Width' ) }
-							value={ w }
+							label={ __( 'Span Rows' ) }
+							value={ h }
 							onChange={ ( next ) => {
 								setAttributes( {
-									w: next,
+									h: next,
 								} );
 							} }
 							min={ 1 }

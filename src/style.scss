@@ -5,7 +5,9 @@
 	grid-gap: 1rem;
 	grid-auto-rows: minmax(calc(100vw/12), auto);
 	grid-auto-flow: dense;
-
+	&.is-style-no-gap {
+		grid-gap: 0;
+	}
 	@media (max-width: $bp-tablet) {
 		grid-template-columns: minmax(0px, 1fr) !important;
 		grid-auto-rows: minmax(1px, auto) !important;

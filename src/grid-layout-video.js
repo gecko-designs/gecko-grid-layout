@@ -27,16 +27,16 @@ import {
 
 const ALLOWED_BLOCKS = ['core/paragraph', 'core/heading', 'core/button', 'core/list', 'core/quote'];
 
-export const name = 'gecko/grid-layout-image';
+export const name = 'gecko/grid-layout-video';
 
 export const settings = {
-	title: __( 'Image' ),
+	title: __( 'Video' ),
 
 	parent: ['gecko/grid-layout'],
 
 	icon: <SVG viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><Path d="M0,0h24v24H0V0z" fill="none" /><Path d="m19 5v14h-14v-14h14m0-2h-14c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h14c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2z" /><Path d="m14.14 11.86l-3 3.87-2.14-2.59-3 3.86h12l-3.86-5.14z" /></SVG>,
 
-	description: __( 'An image Grid Block.' ),
+	description: __( 'A video grid block.' ),
 
 	category: 'common',
 
@@ -57,8 +57,8 @@ export const settings = {
 		h: { type: 'number', default: 1},
 		w: { type: 'number', default: 1},
 		minHeight: { type: 'number', default: 200,},
-		imgId: { type: 'number'},
-		imgUrl: { type: 'string'},
+		mediaId: { type: 'number'},
+		mediaUrl: { type: 'string'},
 	},
 
 	transforms: {
@@ -69,32 +69,24 @@ export const settings = {
 				transform: (attributes, innerBlocks) => {
 					const selected = select('core/editor').getSelectedBlock(); // because innerBlocks does not work.
 					// It appears that innerBlocks will be added in the future.
-					const {h, w, bgMedia, bgMediaUrl, mediaId, mediaUrl, minHeight} = attributes;
-					return createBlock('gecko/grid-layout-image', {
+					const {h, w, bgMedia, bgMediaUrl} = attributes;
+					return createBlock('gecko/grid-layout-video', {
 						h: h,
 						w: w,
-						imgId: bgMedia || mediaId,
-						imgUrl: bgMediaUrl || mediaUrl,
-						minHeight: minHeight,
+						mediaId: bgMedia,
+						mediaUrl: bgMediaUrl,
 					}, selected.innerBlocks);
 				},
 			},	
 		]
 	},
 
-	deprecated: [{
-		migrate() {},
-		save() {
-			return <InnerBlocks.Content / > ;
-		},
-	}],
-
 	edit({ attributes, setAttributes, className, insertBlocksAfter }) {
 		const {
 			h,
 			w,
-			imgId,
-			imgUrl,
+			mediaId,
+			mediaUrl,
 			minHeight,
 		} = attributes;
 		const styles = {
@@ -148,12 +140,12 @@ export const settings = {
 							onSelect={(value) => {
 								// console.log(value);
 								setAttributes({
-									imgId: value.id,
-									imgUrl: value.url,
+									mediaId: value.id,
+									mediaUrl: value.url,
 								});
 							}}
-							type={['image']}
-							value={(imgId)? imgId: null }
+							type={['video']}
+							value={(mediaId)? mediaId: null }
 							render={({open}) => {
 								return(
 									<IconButton
@@ -168,25 +160,25 @@ export const settings = {
 					</Toolbar>
 				</ BlockControls>
 				<div className={`gecko-grid-layout-editor-styles`} style={styles}></div>
-				<figure className={`wp-block-gecko-grid-layout-editor__wrap gecko-grid-layout-image ${attributes.className}`}>
+				<figure className={`wp-block-gecko-grid-layout-editor__wrap gecko-grid-layout-video ${attributes.className}`}>
 					{
-						!imgId &&
+						!mediaId &&
 						<MediaPlaceholder
 							onSelect={(value) => {
 									setAttributes({
-										imgId: value.id,
-										imgUrl: value.url,
+										mediaId: value.id,
+										mediaUrl: value.url,
 									});
 								}}
-							allowedTypes={['image']}
-							accept="image/*"
+							allowedTypes={['video']}
+							accept="video/*"
 						/>
 					}
 					{
-						imgUrl &&
-						<img className="gecko-grid-layout-image__image" src={imgUrl} />
+						mediaUrl &&
+						<img className="gecko-grid-layout-video__image" src={mediaUrl} />
 					}
-					<figcaption className="gecko-grid-layout-image__caption">
+					<figcaption className="gecko-grid-layout-video__caption">
 						{ typeof insertBlocksAfter === 'function' //This line makes sure styles do not break
 							? <InnerBlocks templateLock={ false } allowedBlocks={ALLOWED_BLOCKS}/>
 							: <p>Lorem Ipsum</p> // This is what shows as the preview content.

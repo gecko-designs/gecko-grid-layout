@@ -5,6 +5,9 @@
   grid-auto-rows: minmax(calc(100vw/12), auto);
   grid-auto-flow: dense;
 }
+.wp-block-gecko-grid-layout.is-style-no-gap {
+  grid-gap: 0;
+}
 @media (max-width: 960px) {
   .wp-block-gecko-grid-layout {
     grid-template-columns: minmax(0px, 1fr) !important;

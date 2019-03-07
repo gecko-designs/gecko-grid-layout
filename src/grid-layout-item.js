@@ -1,4 +1,3 @@
-import TypeSelect from './input-type';
 import tinycolor from 'tinycolor2';
 
 /**
@@ -84,14 +83,16 @@ export const settings = {
 				type: 'block',
 				blocks: ['gecko/grid-layout-image', 'gecko/grid-layout-basic'],
 				transform: (attributes, innerBlocks) => {
+					const selected = select('core/editor').getSelectedBlock(); // because innerBlocks does not work.
 					// It appears that innerBlocks will be added in the future.
-					const {h, w, imgId, imgUrl} = attributes;
+					const {h, w, imgId, imgUrl, mediaId, mediaUrl, minHeight} = attributes;
 					return createBlock('gecko/grid-layout-item', {
 						h: h,
 						w: w,
-						bgMedia:imgId,
-						bgMediaUrl: imgUrl,
-					}, innerBlocks);
+						bgMedia: imgId || mediaId,
+						bgMediaUrl: imgUrl || mediaUrl,
+						minHeight: minHeight,
+					}, selected.innerBlocks);
 				},
 			}
 		]
@@ -129,46 +130,29 @@ export const settings = {
 			backgroundImage: 'url(' + bgMediaUrl + ')',
 			minHeight: minHeight + 'px',
 		};
-		if(type === "image"){
-			delete(styles.backgroundColor);
-		}
-		if (type === "solid") {
-			delete(styles.backgroundImage);
-			delete(styles.minHeight);
-		}
 		let lightOrDark = 'light';
 		if (bgColorBrightness < 130) lightOrDark = 'dark';
 		return (
 			<Fragment>
 				<InspectorControls>
-					<PanelBody title="Type">
-						<TypeSelect 
-							onSelect = {(next) => {
-									setAttributes({
-										type: next,
-									});
-								}}
-							value={type}
-						/>
-					</PanelBody>
-					<PanelBody  title="Grid Item">
+					<PanelBody  title="Settings">
 						<RangeControl
-							label={ __( 'Span Rows' ) }
-							value={ h }
+							label={ __( 'Width' ) }
+							value={ w }
 							onChange={ ( next ) => {
 								setAttributes( {
-									h: next,
+									w: next,
 								} );
 							} }
 							min={ 1 }
 							max={ 12 }
 						/>
 						<RangeControl
-							label={ __( 'Span Columns' ) }
-							value={ w }
+							label={ __( 'Span Rows' ) }
+							value={ h }
 							onChange={ ( next ) => {
 								setAttributes( {
-									w: next,
+									h: next,
 								} );
 							} }
 							min={ 1 }
@@ -233,13 +217,6 @@ export const settings = {
 				</InspectorControls>
 				<div className={`gecko-grid-layout-editor-styles`} style={styles}></div>
 				<div className={`wp-block-gecko-grid-layout-editor__wrap${type} ${attributes.className} has-${bgColorSlug}-background-color is-${lightOrDark}-background`}>
-					{!type && <TypeSelect 
-						onSelect = {(next) => {
-								setAttributes({
-									type: next,
-								});
-							}}
-					/>}
 					{
 						(type === 'image' || type === 'image-content') &&
 						!bgMedia &&
@@ -255,7 +232,6 @@ export const settings = {
 						/>
 					}
 					{ 
-						(type === 'solid' || (type === 'image-content' && bgMedia)) &&
 						(typeof insertBlocksAfter === 'function') && //This line makes sure styles do not break
 						<InnerBlocks templateLock={ false } />
 					}
