@@ -101,10 +101,86 @@ This filters allow you to manipulate the output:
 * gecko/grid-layout-image/class - Used to modify classes attached to the block-item
 * gecko/grid-layout-image/style - Used to modify inline styles attached to the block-item
 
+### Basic ###
+Changing the basic block's class names
 ```php
-<?php
-	// Documentation coming
-?>
+// Change class names
+add_filter('gecko/grid-layout-basic/class', 'custom_theme_change_class', 10, 2);
+function custom_theme_change_class($classNames, $attributes){
+	$key = array_search('gecko-grid-layout-item', $classNames); 
+	$classNames[$key] = 'custom-grid-layout-item';
+	return $classNames;
+}
+```
+Changing the basic block's inline styles
+```php
+// Change styles
+add_filter('gecko/grid-layout-basic/style', 'custom_theme_change_class', 10, 2);
+function custom_theme_change_class($styles, $attributes){
+	$styles['grid-column-end'] = 'span 5';
+	return $styles;
+}
+```
+Changing the basic block's html output
+```php
+// Change basic layout
+add_filter('gecko/grid-layout-basic/output', 'custom_theme_change_class', 10, 5);
+function custom_theme_change_class($output, $class, $style, $content, $attributes ){
+	$template = '<div class="%s" style="%s">%s</div>';
+	$output = sprintf($template, $class, $style, $content);
+	return $output;
+}
+```
+
+### Image ###
+Changing the image block's class names
+```php
+// Change class names
+add_filter('gecko/grid-layout-image/class', 'custom_theme_change_class', 10, 2);
+function custom_theme_change_class($classNames, $attributes){
+	$key = array_search('gecko-grid-layout-item', $classNames); 
+	$classNames[$key] = 'custom-grid-layout-item';
+	return $classNames;
+}
+```
+Changing the image block's inline styles
+```php
+// Change styles
+add_filter('gecko/grid-layout-image/style', 'custom_theme_change_class', 10, 2);
+function custom_theme_change_class($styles, $attributes){
+	$styles['grid-column-end'] = 'span 5';
+	return $styles;
+}
+```
+Changing the image block's <img /> html output
+```php
+// Change basic layout
+add_filter('gecko/grid-layout-image/output/image', 'custom_theme_change_class', 10, 7);
+function custom_theme_change_class($output, $preview, $src, $srcset, $alt, $title, $attributes  ){
+	$template = '<img class="gecko-grid-layout-image__image lazy" src="%s" data-src="%s" data-srcset="%s" alt="%s" title="%s"/>';
+	$output = sprintf($template, $preview, $src, $srcset, $alt, $title);;
+	return $output;
+}
+```
+Changing the image block's <figcaption><figcaption/> html output
+```php
+// Change basic layout
+add_filter('gecko/grid-layout-image/output/caption', 'custom_theme_change_class', 10, 7);
+function custom_theme_change_class($output, $content, $attributes ){
+	$template = '<figcaption class="gecko-grid-layout-image__caption">%s</figcaption>';
+	$output = sprintf($template, $content, $attributes);
+	return $output;
+}
+```
+Changing the basic block's html output
+```php
+// Change basic layout
+add_filter('gecko/grid-layout-image/output', 'custom_theme_change_class', 10, 6);
+function custom_theme_change_class($output, $class, $style, $image, $caption, $attributes  ){
+	$template = '<figure class="%s" style="%s">%s%s</figure>';
+	$output = sprintf($template, $class, $style, $image, $caption, $attributes);
+	return $output;
+}
 ```
 
 ## Roadmap ##

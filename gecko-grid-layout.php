@@ -180,7 +180,8 @@ class GeckoGridLayout {
 		$defaults = apply_filters( 'gecko/grid-layout-image/defaults', $defaults, $attributes );
 		$atts = wp_parse_args( $attributes, $defaults );
 
-		$classNames = array('wp-block-gecko-grid-layout__item gecko-grid-layout-image');
+		$classNames = array('wp-block-gecko-grid-layout__item');
+		$classNames[] = 'gecko-grid-layout-image';
 		if($atts['className']) $classNames[] = $atts['className'];
 		// Add a filter to hook into classNames
 		$classNames = apply_filters( 'gecko/grid-layout-image/class', $classNames, $attributes );
@@ -196,15 +197,26 @@ class GeckoGridLayout {
 		foreach ($styles as $key => $value) {
 			if($value) $styleString .= $key.':'.$value.';';
 		}
+		// Image Template
 		$preview = wp_get_attachment_image_url($atts['imgId'], 'thumbnail');
 		$src = wp_get_attachment_image_url($atts['imgId'], 'large');
 		$srcset = wp_get_attachment_image_srcset( $atts['imgId'], array( 400, 200 ) );
 		$alt = get_post_meta( $atts['imgId'], '_wp_attachment_image_alt', true );
 		$title = get_the_title($atts['imgId']);
-		$innerContent =  sprintf('<img class="gecko-grid-layout-image__image lazy" src="%s" data-src="%s" data-srcset="%s" alt="%s" title="%s"/>', $preview, $src, $srcset, $alt, $title);
-		$innerContent .= '<figcaption class="gecko-grid-layout-image__caption">'.$content.'</figcaption>';
-		// $img =  sprintf('<img src="%s" src-set="%s">%s</div>', );
-		return sprintf('<figure class="%s" style="%s">%s</figure>', implode(' ', $classNames), $styleString, $innerContent);
+		$output = sprintf('<img class="gecko-grid-layout-image__image lazy" src="%s" data-src="%s" data-srcset="%s" alt="%s" title="%s"/>', $preview, $src, $srcset, $alt, $title);
+		$image = apply_filters( 'gecko/grid-layout-image/output/image', $output, $preview, $src, $srcset, $alt, $title, $attributes);
+		// Caption Template
+		$output = sprintf('<figcaption class="gecko-grid-layout-image__caption">%s</figcaption>', $content);
+		$caption = apply_filters( 'gecko/grid-layout-image/output/caption', $output, $content, $attributes );
+		// Output
+		$style = '';
+		foreach ($styles as $key => $value) {
+			if($value) $style .= $key.':'.$value.';';
+		}
+		$class = implode(' ', $classNames);
+		$template = '<figure class="%s" style="%s">%s%s</figure>';
+		$output = sprintf($template, $class, $style, $image, $caption);
+		return apply_filters( 'gecko/grid-layout-image/output', $output, $class, $style, $image, $caption, $attributes );
 	}
 
 	/**
@@ -222,7 +234,8 @@ class GeckoGridLayout {
 		$defaults = apply_filters( 'gecko/grid-layout-basic/defaults', $defaults, $attributes );
 		$atts = wp_parse_args( $attributes, $defaults );
 
-		$classNames = array('wp-block-gecko-grid-layout__item gecko-grid-layout-item');
+		$classNames = array('wp-block-gecko-grid-layout__item');
+		$classNames[] = 'gecko-grid-layout-item';
 		if($atts['className']) $classNames[] = $atts['className'];
 		// Add a filter to hook into classNames
 		$classNames = apply_filters( 'gecko/grid-layout-basic/class', $classNames, $attributes );
@@ -233,10 +246,13 @@ class GeckoGridLayout {
 		// Add a filter to hook into the inine styles $args = ($styles, $atts)
 		$styles = apply_filters( 'gecko/grid-layout-basic/style', $styles, $attributes );
 
-		$styleString = '';
+		$style = '';
 		foreach ($styles as $key => $value) {
-			if($value) $styleString .= $key.':'.$value.';';
+			if($value) $style .= $key.':'.$value.';';
 		}
-		return sprintf('<div class="%s" style="%s">%s</div>', implode(' ', $classNames), $styleString, $content);
+		$class = implode(' ', $classNames);
+		$template = '<div class="%s" style="%s">%s</div>';
+		$output = sprintf($template, $class, $style, $content);
+		return apply_filters( 'gecko/grid-layout-basic/output', $output, $class, $style, $content, $attributes );
 	}
 }
