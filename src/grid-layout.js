@@ -6,6 +6,7 @@ import { G, SVG, Path } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import { InnerBlocks } from '@wordpress/editor';
 import { select } from '@wordpress/data';
+import {createBlock} from '@wordpress/blocks';
 import TemplatePicker from './template-select';
 
 /**
@@ -42,6 +43,25 @@ export const settings = {
 			},
 		}
 	],
+
+	transforms: {
+		from: [{
+			type: 'block',
+			blocks: ['core/columns'],
+			transform: (attributes) => {
+				const selected = select('core/editor').getSelectedBlock(); // because innerBlocks does not work.
+				const columns = selected.innerBlocks;
+				const count = columns.length;
+				const w = Math.floor(12/count);
+				const innerBlocks = [];
+				columns.map((column) => {
+					const block = createBlock('gecko/grid-layout-basic', {w:w}, column.innerBlocks);
+					innerBlocks.push(block)
+				});
+				return createBlock('gecko/grid-layout', {}, innerBlocks);
+			},
+		}, ]
+	},
 
 	styles: [
 		{ name: 'default', label: __( 'Default'), isDefault: true },

@@ -11,9 +11,7 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import {
-	createBlock,
-} from '@wordpress/blocks';
+import {createBlock} from '@wordpress/blocks';
 import {
 	InspectorControls,
 	InnerBlocks,

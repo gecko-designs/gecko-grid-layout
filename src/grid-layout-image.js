@@ -11,9 +11,7 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import {
-	createBlock,
-} from '@wordpress/blocks';
+import { createBlock } from '@wordpress/blocks';
 import {
 	InspectorControls,
 	InnerBlocks,
@@ -186,12 +184,15 @@ export const settings = {
 						imgUrl &&
 						<img className="gecko-grid-layout-image__image" src={imgUrl} />
 					}
-					<figcaption className="gecko-grid-layout-image__caption">
-						{ typeof insertBlocksAfter === 'function' //This line makes sure styles do not break
-							? <InnerBlocks templateLock={ false } allowedBlocks={ALLOWED_BLOCKS}/>
-							: <p>Lorem Ipsum</p> // This is what shows as the preview content.
-						}
-					</figcaption>
+					{
+						imgId &&
+						<figcaption className="gecko-grid-layout-image__caption">
+							{ typeof insertBlocksAfter === 'function' //This line makes sure styles do not break
+								? <InnerBlocks templateLock={ false } allowedBlocks={ALLOWED_BLOCKS}/>
+								: <p>Lorem Ipsum</p> // This is what shows as the preview content.
+							}
+						</figcaption>
+					}
 				</figure>
 			</Fragment>
 		);
