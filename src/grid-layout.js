@@ -2,12 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { PanelBody, RangeControl, G, SVG, Path } from '@wordpress/components';
+import { G, SVG, Path } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
-import {
-	InspectorControls,
-	InnerBlocks,
-} from '@wordpress/editor';
+import { InnerBlocks } from '@wordpress/editor';
 import { select } from '@wordpress/data';
 import TemplatePicker from './template-select';
 
@@ -15,7 +12,6 @@ import TemplatePicker from './template-select';
  * Allowed blocks constant is passed to InnerBlocks precisely as specified here.
  * The contents of the array should never change.
  * The array should contain the name of each block that is allowed.
- * In columns block, the only block we allow is 'dmp/grid-item'.
  *
  * @constant
  * @type {string[]}
@@ -52,17 +48,13 @@ export const settings = {
 		{ name: 'no-gap', label: __( 'No Gap') },
 	],
 
-	edit( { attributes, setAttributes, insertBlocksAfter, clientId } ) {
+	edit( { insertBlocksAfter, clientId } ) {
+		// Get the block so we can see if it had innerblocks
 		const block = select('core/editor').getBlocksByClientId(clientId)[0];
 		const hasInnerBlocks = (block && block.innerBlocks) ? block.innerBlocks.length > 0 : false;
-
+		
 		return (
 			<Fragment>
-				<InspectorControls>
-					<PanelBody>
-						
-					</PanelBody>
-				</InspectorControls>
 				<div className="wp-block-gecko-grid-layout-editor">
 					{
 						typeof insertBlocksAfter === 'function' ?
@@ -75,6 +67,7 @@ export const settings = {
 	},
 
 	save() {
-		return(<div><InnerBlocks.Content /></div>); // Honestly I don't want to do this but conventions are conventions.
+		// Honestly I don't want to do this but conventions are conventions.
+		return(<div><InnerBlocks.Content /></div>); 
 	},
 };

@@ -65,7 +65,7 @@ export const settings = {
 		from: [
 			{
 				type: 'block',
-				blocks: ['gecko/grid-layout-item', 'gecko/grid-layout-basic'],
+				blocks: ['gecko/grid-layout-basic', 'gecko/grid-layout-item'],
 				transform: (attributes, innerBlocks) => {
 					const selected = select('core/editor').getSelectedBlock(); // because innerBlocks does not work.
 					// It appears that innerBlocks will be added in the future.
@@ -198,6 +198,7 @@ export const settings = {
 	},
 
 	save() {
-		return(<div><InnerBlocks.Content /></div>); // Honestly I don't want to do this but conventions are conventions.
+		// Honestly I don't want to do this but conventions are conventions.
+		return(<div><InnerBlocks.Content /></div>); 
 	},
 };

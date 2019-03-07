@@ -8,7 +8,6 @@ import {
 	RangeControl,
 	Path,
 	SVG,
-	ResizableBox
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
@@ -241,6 +240,7 @@ export const settings = {
 	},
 
 	save() {
-		return(<div><InnerBlocks.Content /></div>); // Honestly I don't want to do this but conventions are conventions.
+		// Honestly I don't want to do this but conventions are conventions.
+		return(<div><InnerBlocks.Content /></div>);
 	},
 };
