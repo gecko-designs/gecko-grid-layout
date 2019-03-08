@@ -92,6 +92,12 @@
 	margin: 0;
 }
 
+// Ensure the resize handles are visible when the image is focused.
+[data-type="gecko/grid-layout-image"].is-selected .components-resizable-box__handle {
+	display: block;
+}
+
+
 .is-dragging-components-draggable {
 	.gecko-grid-layout-image {
 		&.is-style-hover {
