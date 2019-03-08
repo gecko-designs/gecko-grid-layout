@@ -12,7 +12,15 @@
 			grid-auto-flow: dense;
 			border: 1px dashed lightblue;
 			margin: 0;
+			@media (max-width: $bp-tablet) {
+				grid-template-columns: minmax(0px, 1fr) !important;
+				grid-auto-rows: minmax(1px, auto) !important;
+			}
 
+			@media (max-width: $bp-mobile) {
+				grid-template-columns: minmax(0px, 1fr) !important;
+				grid-auto-rows: minmax(1px, auto) !important;
+			}
 			>[data-type="gecko/grid-layout-item"],
 			>[data-type="gecko/grid-layout-basic"],
 			>[data-type="gecko/grid-layout-image"] {
@@ -39,6 +47,12 @@
 				background-image: none !important; // Maybe move
 				background-color: transparent !important; // Maybe move
 				border: 1px dashed lightblue; // Maybe move
+				@media (max-width: $bp-mobile) {
+					grid-column: 1 / -1 !important;
+				}
+				.editor-media-placeholder {
+					min-height: 100%;
+				}
 			}
 
 			.editor-block-list__block-edit {
@@ -55,8 +69,8 @@
 
 			>.editor-block-list__block {
 				>.editor-block-list__block-edit {
-					// margin-top: 1rem;
-					// margin-bottom: 1rem;
+					margin-top: 1rem;
+					margin-bottom: 1rem;
 					// margin-left: -28px;
 					// margin-right: -28px;
 				}

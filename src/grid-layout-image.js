@@ -9,7 +9,6 @@ import {
 	SVG,
 	IconButton,
 	Toolbar,
-	// ResizableBox,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
@@ -85,7 +84,7 @@ export const settings = {
 	deprecated: [{
 		migrate() {},
 		save() {
-			return <InnerBlocks.Content / > ;
+			return(<InnerBlocks.Content />);
 		},
 	}],
 
@@ -102,44 +101,6 @@ export const settings = {
 			gridRowEnd: 'span ' + h,
 			minHeight: minHeight + 'px',
 		};
-		// const onResizing = (event, direction, elt, delta) => {
-		// 	if (direction === 'bottom') {
-		// 		const newMinHeight = (elt.clientHeight > 600) ? 600 : elt.clientHeight;
-		// 		setAttributes({
-		// 			minHeight: newMinHeight,
-		// 		});
-		// 	}
-		// 	if (direction !== 'right') return;
-		// 	// console.log(elt);
-		// 	const columnWidth = Math.floor(elt.parentNode.offsetWidth / w);
-		// 	const currentSpan = Math.floor(elt.parentNode.offsetWidth / columnWidth);
-		// 	//const elColWidth = Math.floor(elt.offsetWidth / w);
-		// 	//const spans = Math.floor(elt.offsetWidth / elColWidth);
-		// 	const toUpdate = Math.floor(parseInt(delta.width, 10) / columnWidth);
-		// 	const original = w - toUpdate;
-		// 	let newWidth = w + toUpdate;
-		// 	// let add = true;
-		// 	// if (spans < newWidth) {
-		// 	// 	add = false;
-		// 	// 	newWidth = w - 1;
-		// 	// }
-		// 	console.log(w, original, toUpdate , newWidth);
-		// 	// console.log('', newWidth * elColWidth, newWidth * columnWidth);
-		// 	// console.log(Math.floor(parseInt(delta.width, 10) / columnWidth));
-		// 	// console.log(newWidth, w, parseInt(delta.width, 10), elt, elt.clientWidth);
-		// 	// console.log(delta);
-		// 	// const diff = newWidth - currentSpan;
-		// 	// if (
-		// 	// 	(diff === 1 || diff === -1)
-		// 	// 	// (newWidth * elColWidth + columnWidth < newWidth * columnWidth)
-		// 	// 	) {
-		// 		if (newWidth > 12) {newWidth = 12}
-		// 		if (newWidth < 1) {newWidth = 1}
-		// 		return setAttributes( {
-		// 			w: newWidth,
-		// 		} );
-		// 	// }
-		// }
 		return (
 			<Fragment>
 				<InspectorControls>
@@ -207,40 +168,6 @@ export const settings = {
 				</ BlockControls>
 				<div className={`gecko-grid-layout-editor-styles`} style={styles}></div>
 				<figure className={`wp-block-gecko-grid-layout-editor__wrap gecko-grid-layout-image ${attributes.className}`}>
-					{/* <ResizableBox
-						size = {{
-							width: '100%',
-							height: '100%',
-						}}
-						// minHeight = "50"
-						// minWidth = "100%"
-						className = {
-							`wp-block-gecko-grid-layout-editor__wrap gecko-grid-layout-image ${attributes.className}`
-						}
-						// minHeight={ minHeight }
-						// maxHeight={600}
-						// lockAspectRatio
-						enable={ {
-							top: false,
-							right: true,
-							bottom: true,
-							left: false,
-						} }
-						onResizeStart={ (event, direction, elt, delta) => {
-							toggleSelection( false );
-						} }
-						onResize={ 	debounce(onResizing, 250) }
-						onResizeStop={ ( event, direction, elt, delta ) => {
-							// const columnWidth = Math.floor(elt.parentNode.clientWidth / w);
-							// const updated = Math.floor(parseInt(delta.width, 10) / columnWidth);
-							if (direction !== 'bottom') return;
-							const newMinHeight = (elt.clientHeight > 600)? 600 : elt.clientHeight;
-							setAttributes( {
-								minHeight: newMinHeight,
-							} );
-							toggleSelection( true );
-						} }
-					> */}
 					{
 						!imgId &&
 						<MediaPlaceholder
@@ -267,7 +194,6 @@ export const settings = {
 							}
 						</figcaption>
 					}
-				{/* </ResizableBox> */}
 				</figure>
 			</Fragment>
 		);

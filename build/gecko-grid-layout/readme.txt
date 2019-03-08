@@ -4,7 +4,7 @@ Donate link: https://dwayneparton.com
 Tags: gutenberg, block, grid, grid-layout
 Requires at least: 5.0
 Tested up to: 5.1
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,6 +35,8 @@ Grid Layout is a tool for developers. Themes can determine the styles that are a
 1. No questions have been asked...let\'s change that.
 
 == Changelog ==
+= 1.1.2 =
+* Editor style clean up
 = 1.1.1 =
 * Deprecated gecko/grid-layout-item
 * Updated php filters and documented them
@@ -72,6 +74,8 @@ Grid Layout is a tool for developers. Themes can determine the styles that are a
 * Initial release
 
 == Upgrade Notice ==
+= 1.1.2 =
+* Editor style clean up
 = 1.1.1 =
 * Deprecated gecko/grid-layout-item
 = 1.1.0 =
