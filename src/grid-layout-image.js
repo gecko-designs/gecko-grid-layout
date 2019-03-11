@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-// import debounce from "lodash/debounce";
+import debounce from "lodash/debounce";
 import {
 	PanelBody,
 	RangeControl,
@@ -9,6 +9,7 @@ import {
 	SVG,
 	IconButton,
 	Toolbar,
+	ResizableBox,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
@@ -101,6 +102,30 @@ export const settings = {
 			gridRowEnd: 'span ' + h,
 			minHeight: minHeight + 'px',
 		};
+		const onResizing = (event, direction, elt, delta) => {
+			if (direction === 'bottom'){
+				const newMinHeight = (elt.clientHeight > 600) ? 600 : elt.clientHeight;
+				setAttributes({ minHeight: newMinHeight });
+				elt.style.height = "100%";
+			};
+			if (direction !== 'right') return;
+			// console.log(elt);
+			const columnWidth = Math.floor(elt.parentNode.offsetWidth / w);
+			const currentSpan = Math.floor(elt.parentNode.offsetWidth / columnWidth);
+			const elColWidth = Math.floor(elt.clientWidth / w);
+			const spans = Math.floor(elt.clientWidth / columnWidth);
+			const toUpdate = Math.floor(parseInt(delta.width, 10) / columnWidth);
+			const original = w - toUpdate;
+			let newWidth = spans;
+			if (newWidth > 12) {newWidth = 12}
+			if (newWidth < 1) {newWidth = 1}
+			setAttributes( {
+				w: newWidth,
+			} );
+			elt.style.width = "100%";
+			// }
+			return;
+		}
 		return (
 			<Fragment>
 				<InspectorControls>
@@ -167,7 +192,39 @@ export const settings = {
 					</Toolbar>
 				</ BlockControls>
 				<div className={`gecko-grid-layout-editor-styles`} style={styles}></div>
-				<figure className={`wp-block-gecko-grid-layout-editor__wrap gecko-grid-layout-image ${attributes.className}`}>
+				<ResizableBox
+						size = {{
+							width: '',
+							height: '100%',
+						}}
+						// minHeight = "50"
+						// minWidth = "100%"
+						className = {
+							`wp-block-gecko-grid-layout-editor__wrap gecko-grid-layout-image ${attributes.className}`
+						}
+						// minHeight={ minHeight }
+						// maxHeight={600}
+						// lockAspectRatio
+						enable={ {
+							top: false,
+							right: true,
+							bottom: true,
+							left: false,
+						} }
+						onResizeStart={ (event, direction, elt, delta) => {
+							toggleSelection( false );
+						} }
+						onResize={ 	debounce(onResizing, 250) }
+						onResizeStop={ ( event, direction, elt, delta ) => {
+							elt.style.width = "100%";
+							if (direction !== 'bottom') return;
+							const newMinHeight = (elt.clientHeight > 600)? 600 : elt.clientHeight;
+							setAttributes( {
+								minHeight: newMinHeight,
+							} );
+							toggleSelection( true );
+						} }
+					>
 					{
 						!imgId &&
 						<MediaPlaceholder
@@ -194,7 +251,7 @@ export const settings = {
 							}
 						</figcaption>
 					}
-				</figure>
+				</ResizableBox>
 			</Fragment>
 		);
 	},

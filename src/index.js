@@ -24,7 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	const observer = new MutationObserver(function (mutations) {
 		mutations.forEach(function (mutation) {
 			// On style mutation update blocks styles.
-			const block = mutation.target.closest('[data-type^="gecko/grid-layout-"');
+			const block = mutation.target.closest('[data-type^="gecko/grid-layout-"]');
+			if(!block) return;
 			const styles = mutation.target.getAttribute('style');
 			block.style = styles;
 		});
@@ -44,7 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Add the styles to grid layout items for editor.
 	function updateGridItemStyles() {
-		const blocks = document.querySelectorAll('[data-type^="gecko/grid-layout-"');
+		const blocks = document.querySelectorAll('[data-type^="gecko/grid-layout-"]');
+		if(!blocks.length > 0) return;
 		for (const block of blocks) {
 			const styles = block.querySelector('.gecko-grid-layout-editor-styles').getAttribute('style');
 			block.style = styles;
