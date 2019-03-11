@@ -4,7 +4,7 @@ Donate link: https://dwayneparton.com
 Tags: gutenberg, block, grid, grid-layout
 Requires at least: 5.0
 Tested up to: 5.1
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,6 +35,8 @@ Grid Layout is a tool for developers. Themes can determine the styles that are a
 1. No questions have been asked...let\'s change that.
 
 == Changelog ==
+= 1.1.5 =
+* Bug Fix
 = 1.1.4 =
 * Added ResizeableBox for adjusting width and minHeight
 * Safari Bug Fix
@@ -80,6 +82,8 @@ Grid Layout is a tool for developers. Themes can determine the styles that are a
 * Initial release
 
 == Upgrade Notice ==
+= 1.1.5 =
+* Bug Fix
 = 1.1.4 =
 * Added ResizeableBox for adjusting width and minHeight
 = 1.1.3 =

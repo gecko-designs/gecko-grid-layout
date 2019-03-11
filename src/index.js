@@ -44,15 +44,30 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	// Add the styles to grid layout items for editor.
-	function updateGridItemStyles() {
+	function applyAllGridItemStyles() {
 		const blocks = document.querySelectorAll('[data-type^="gecko/grid-layout-"]');
 		if(!blocks.length > 0) return;
 		for (const block of blocks) {
-			const styles = block.querySelector('.gecko-grid-layout-editor-styles').getAttribute('style');
-			block.style = styles;
+			applyGridItemStyle(block);
 		}
 	}
 
-	updateGridItemStyles();
+	function applyGridItemStyle(block){
+		const styles = block.querySelector('.gecko-grid-layout-editor-styles').getAttribute('style');
+		block.style = styles;
+	}
+
+	// Add the styles to grid layout items for editor.
+	function newGridInserted(e) {
+		if (typeof e.target.querySelectorAll !== 'function') return;
+		const blocks = e.target.querySelectorAll('[data-type^="gecko/grid-layout-"]');
+		if (!blocks.length > 0) return;
+		for (const block of blocks) {
+			applyGridItemStyle(block);
+		}
+	}
+
+	applyAllGridItemStyles();
 	document.addEventListener("DOMNodeInserted", addStyleElementsToObserver);
+	document.addEventListener("DOMNodeInserted", newGridInserted);
 });
