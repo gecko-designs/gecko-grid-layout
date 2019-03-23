@@ -114,7 +114,7 @@
   border: 1px dashed lightblue;
   margin: 0;
 }
-@media (max-width: 960px) {
+@media (max-width: 720px) {
   .wp-block-gecko-grid-layout-editor > .editor-inner-blocks > .editor-block-list__layout {
     grid-template-columns: minmax(0px, 1fr) !important;
     grid-auto-rows: minmax(1px, auto) !important;

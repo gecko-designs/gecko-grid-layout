@@ -13,16 +13,20 @@
 		grid-auto-rows: minmax(1px, auto) !important;
 	}
 
-	@media (max-width: $bp-mobile) {
-		grid-template-columns: minmax(0px, 1fr) !important;
-		grid-auto-rows: minmax(1px, auto) !important;
-	}
+	// @media (max-width: $bp-mobile) {
+	// 	grid-template-columns: minmax(0px, 1fr) !important;
+	// 	grid-auto-rows: minmax(1px, auto) !important;
+	// }
 
 	&__item {
 		grid-column-end: span 4;
+		grid-column-end: var(--grid-column-end);
 		grid-row-end: span 1;
-		@media (max-width: $bp-mobile) { 
+		grid-row-end: var(--grid-row-end);
+		@media (max-width: $bp-tablet) {
 			grid-column: 1 / -1 !important;
+			grid-column-start: 1 !important;
+			grid-column-end: -1 !important;
 		}
 	}
 }
