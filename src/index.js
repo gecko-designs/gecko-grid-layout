@@ -53,21 +53,44 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function applyGridItemStyle(block){
+		// if (typeof block.querySelector !== 'function') return;
 		const styles = block.querySelector('.gecko-grid-layout-editor-styles').getAttribute('style');
 		block.style = styles;
 	}
 
 	// Add the styles to grid layout items for editor.
-	function newGridInserted(e) {
-		if (typeof e.target.querySelectorAll !== 'function') return;
-		const blocks = e.target.querySelectorAll('[data-type^="gecko/grid-layout-"]');
-		if (!blocks.length > 0) return;
-		for (const block of blocks) {
-			applyGridItemStyle(block);
-		}
-	}
+	// function newGridInserted(e) {
+	// 	if (typeof e.target.querySelectorAll !== 'function') return;
+	// 	const blocks = e.target.querySelectorAll('[data-type^="gecko/grid-layout-"]');
+	// 	if (!blocks.length > 0) return;
+	// 	console.log('node added', e);
+	// 	for (const block of blocks) {
+	// 		console.log('style', block);
+	// 		applyGridItemStyle(block);
+	// 	}
+	// }
+	
+	const newBlockObserver = new MutationObserver(function (mutations) {
+		mutations.forEach(function (mutation) {
+			if (!mutation.addedNodes) return
+			for (var i = 0; i < mutation.addedNodes.length; i++) {
+				// do things to your newly added nodes here
+				var node = mutation.addedNodes[i]
+				if (typeof node.matches !== 'function') return;
+				if (!node.matches('[data-type^="gecko/grid-layout-"]')) return;
+				return applyGridItemStyle(node);
+			}
+		})
+	})
 
+	newBlockObserver.observe(document.body, {
+		childList: true,
+		subtree: true,
+		attributes: false,
+		characterData: false
+	});
+	
 	applyAllGridItemStyles();
+	// document.addEventListener("DOMNodeInserted", newGridInserted);
 	document.addEventListener("DOMNodeInserted", addStyleElementsToObserver);
-	document.addEventListener("DOMNodeInserted", newGridInserted);
 });
