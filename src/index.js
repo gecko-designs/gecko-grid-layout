@@ -59,16 +59,16 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	// Add the styles to grid layout items for editor.
-	// function newGridInserted(e) {
-	// 	if (typeof e.target.querySelectorAll !== 'function') return;
-	// 	const blocks = e.target.querySelectorAll('[data-type^="gecko/grid-layout-"]');
-	// 	if (!blocks.length > 0) return;
-	// 	console.log('node added', e);
-	// 	for (const block of blocks) {
-	// 		console.log('style', block);
-	// 		applyGridItemStyle(block);
-	// 	}
-	// }
+	function newGridInserted(e) {
+		if (typeof e.target.querySelectorAll !== 'function') return;
+		const blocks = e.target.querySelectorAll('[data-type^="gecko/grid-layout-"]');
+		if (!blocks.length > 0) return;
+		// console.log('node added', e);
+		for (const block of blocks) {
+			// console.log('style', block);
+			applyGridItemStyle(block);
+		}
+	}
 	
 	const newBlockObserver = new MutationObserver(function (mutations) {
 		mutations.forEach(function (mutation) {
@@ -91,6 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 	
 	applyAllGridItemStyles();
-	// document.addEventListener("DOMNodeInserted", newGridInserted);
+	document.addEventListener("DOMNodeInserted", newGridInserted);
 	document.addEventListener("DOMNodeInserted", addStyleElementsToObserver);
 });
