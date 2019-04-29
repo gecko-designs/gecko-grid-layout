@@ -4,7 +4,7 @@ Donate link: https://dwayneparton.com
 Tags: gutenberg, block, grid, grid-layout
 Requires at least: 5.0
 Tested up to: 5.1
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,6 +35,10 @@ Grid Layout is a tool for developers. Themes can determine the styles that are a
 1. No questions have been asked...let\'s change that.
 
 == Changelog ==
+= 1.1.7 =
+* Vertical Alignment for basic block
+* Bug fixes for backend
+* Added 'lazy-load' image size
 = 1.1.6 =
 * Updated grid span to favor variables. Grid isn't supported by browsers that do no use variables.
 = 1.1.5 =
@@ -84,6 +88,8 @@ Grid Layout is a tool for developers. Themes can determine the styles that are a
 * Initial release
 
 == Upgrade Notice ==
+= 1.1.7 =
+* Vertical Alignment for basic block & bug fixes
 = 1.1.6 =
 * Style fix for safari
 = 1.1.5 =

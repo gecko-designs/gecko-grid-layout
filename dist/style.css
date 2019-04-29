@@ -14,6 +14,18 @@
     grid-auto-rows: minmax(1px, auto) !important;
   }
 }
+.wp-block-gecko-grid-layout .align-content-center {
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+.wp-block-gecko-grid-layout .align-content-top {
+  -ms-flex-item-align: start;
+      align-self: start;
+}
+.wp-block-gecko-grid-layout .align-content-bottom {
+  -ms-flex-item-align: end;
+      align-self: end;
+}
 .wp-block-gecko-grid-layout__item {
   grid-column-end: span 4;
   grid-column-end: var(--grid-column-end);

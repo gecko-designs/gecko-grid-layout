@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.1.6
+ * Version: 1.1.7
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
@@ -20,6 +20,7 @@ add_action( "plugins_loaded", function(){
 class GeckoGridLayout {
 	public function __construct() {
 		add_action("init", [$this, "register_block_type"]);
+		add_image_size( 'lazy-load', 100, 100 );
 	}
 
 	public function register_block_type() {
@@ -131,7 +132,11 @@ class GeckoGridLayout {
 			if($value) $styleString .= $key.':'.$value.';';
 		}
 		// Image Template
-		$preview = wp_get_attachment_image_url($atts['imgId'], 'thumbnail');
+		$preview = wp_get_attachment_image_url($atts['imgId'], 'lazy-load');
+		// Check if lazy-load image size exists.
+		if($preview === wp_get_attachment_image_url($atts['imgId'], 'full')){
+			$preview = wp_get_attachment_image_url($atts['imgId'], 'thumbnail');
+		}
 		$src = wp_get_attachment_image_url($atts['imgId'], 'large');
 		$srcset = wp_get_attachment_image_srcset( $atts['imgId'], array( 400, 200 ) );
 		$alt = get_post_meta( $atts['imgId'], '_wp_attachment_image_alt', true );
@@ -161,6 +166,7 @@ class GeckoGridLayout {
 		$defaults = array(
 			'w' => false,
 			'h' => false,
+			'alignContent' => false,
 			'className' => false,
 		);
 		// Add a filter to hook into the default args
@@ -170,6 +176,7 @@ class GeckoGridLayout {
 		$classNames = array('wp-block-gecko-grid-layout__item');
 		$classNames[] = 'gecko-grid-layout-item';
 		if($atts['className']) $classNames[] = $atts['className'];
+		if($atts['alignContent']) $classNames[] = 'align-content-'.$atts['alignContent'];
 		// Add a filter to hook into classNames
 		$classNames = apply_filters( 'gecko/grid-layout-basic/class', $classNames, $attributes );
 

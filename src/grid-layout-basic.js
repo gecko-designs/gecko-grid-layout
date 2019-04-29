@@ -7,11 +7,12 @@ import {
 	Path,
 	SVG,
 	Rect,
+	Toolbar,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import {createBlock} from '@wordpress/blocks';
-import {InspectorControls,InnerBlocks} from '@wordpress/editor';
+import {InspectorControls,InnerBlocks,BlockControls} from '@wordpress/editor';
 import {select} from '@wordpress/data';
 
 export const name = 'gecko/grid-layout-basic';
@@ -41,6 +42,7 @@ export const settings = {
 	attributes: {
 		h: { type: 'number', default: 1},
 		w: { type: 'number', default: 1},
+		alignContent: { type: 'string', default: 'top'},
 	},
 
 	transforms: {
@@ -72,10 +74,13 @@ export const settings = {
 		const {
 			h,
 			w,
+			alignContent,
 		} = attributes;
+		
 		const styles = {
 			gridColumnEnd: 'span '+ w,
 			gridRowEnd: 'span ' + h,
+			alignSelf: (alignContent === 'center')? 'center': 'start',
 		};
 		return (
 			<Fragment>
@@ -105,8 +110,35 @@ export const settings = {
 						/>
 					</PanelBody>
 				</InspectorControls>
+				<BlockControls>
+					<Toolbar controls={[
+						{
+							icon: 'arrow-up-alt',
+							title: __('Align Top'),
+							isActive: alignContent === 'top',
+							onClick: () => setAttributes({
+								alignContent: 'top'
+							}),
+						},
+						{
+							icon: 'align-center',
+							title: __('Align Center'),
+							isActive: alignContent === 'center',
+							onClick: () => setAttributes({alignContent: 'center'}),
+						},
+						{
+							icon: 'arrow-down-alt',
+							title: __('Align Bottom'),
+							isActive: alignContent === 'bottom',
+							onClick: () => setAttributes({alignContent: 'bottom'}),
+						},
+					]}>
+					</Toolbar>
+				</BlockControls>
 				<div className={`gecko-grid-layout-editor-styles`} style={styles}></div>
-				<div  className={`wp-block-gecko-grid-layout-editor__wrap gecko-grid-layout-basic ${attributes.className}`}>
+				<div className = {
+					`wp-block-gecko-grid-layout-editor__wrap gecko-grid-layout-basic ${attributes.className} align-content-${attributes.alignContent}`
+				} >
 					{ typeof insertBlocksAfter === 'function' //This line makes sure styles do not break
 						? <InnerBlocks templateLock={ false }/>
 						: <p>Lorem Ipsum</p> // This is what shows as the preview content.

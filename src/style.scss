@@ -12,7 +12,15 @@
 		grid-template-columns: minmax(0px, 1fr) !important;
 		grid-auto-rows: minmax(1px, auto) !important;
 	}
-
+	.align-content-center {
+		align-self: center;
+	}
+	.align-content-top {
+		align-self: start;
+	}
+	.align-content-bottom {
+		align-self: end;
+	}
 	// @media (max-width: $bp-mobile) {
 	// 	grid-template-columns: minmax(0px, 1fr) !important;
 	// 	grid-auto-rows: minmax(1px, auto) !important;
