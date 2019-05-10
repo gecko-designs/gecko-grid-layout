@@ -5,6 +5,15 @@
   grid-auto-rows: minmax(calc(100vw/12), auto);
   grid-auto-flow: dense;
 }
+.wp-block-gecko-grid-layout--ie {
+  display: -ms-grid;
+  -ms-grid-columns: 10px minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr) minmax(1rem, 1fr);
+  -ms-grid-rows: auto;
+}
+.wp-block-gecko-grid-layout--ie .wp-block-gecko-grid-layout__item {
+  -ms-grid-column-span: 4;
+  padding: 0.5rem;
+}
 .wp-block-gecko-grid-layout.is-style-no-gap {
   grid-gap: 0;
 }

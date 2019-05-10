@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.1.7
+ * Version: 1.1.8
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
@@ -123,6 +123,8 @@ class GeckoGridLayout {
 		$styles = array();
 		$styles['--grid-column-end'] = ($atts['w'])?'span '.$atts['w']:false;
 		$styles['--grid-row-end'] = ($atts['h'])?'span '.$atts['h']:false;
+		$styles['-ms-grid-column-span'] = ($atts['w'])? $atts['w']:false;
+		$styles['-ms-grid-row-span'] = ($atts['h'])? $atts['h']:false;
 		$styles['min-height'] = ($atts['minHeight'])?$atts['minHeight'].'px':false;
 		// Add a filter to hook into the inine styles $args = ($styles, $atts)
 		$styles = apply_filters( 'gecko/grid-layout-image/style', $styles, $attributes );
@@ -183,6 +185,8 @@ class GeckoGridLayout {
 		$styles = array();
 		$styles['grid-column-end'] = ($atts['w'])?'span '.$atts['w']:false;
 		$styles['grid-row-end'] = ($atts['h'])?'span '.$atts['h']:false;
+		$styles['-ms-grid-column-span'] = ($atts['w'])? $atts['w']:false;
+		$styles['-ms-grid-row-span'] = ($atts['h'])? $atts['h']:false;
 		// Add a filter to hook into the inine styles $args = ($styles, $atts)
 		$styles = apply_filters( 'gecko/grid-layout-basic/style', $styles, $attributes );
 
