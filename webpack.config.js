@@ -111,7 +111,7 @@ const settings = {
 					{
 						loader: 'css-loader',
 						options: {
-							sourceMap: (!production) ? true : false,
+							sourceMap: false,
 						}
 					},
 					{
@@ -126,7 +126,7 @@ const settings = {
 						loader: 'sass-loader',
 						options: {
 							implementation: require('sass'),
-							sourceMap: (!production) ? true : false,
+							sourceMap: false,
 							importer: globImporter()
 						}
 					}
