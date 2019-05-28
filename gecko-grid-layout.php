@@ -3,7 +3,7 @@
  * Plugin Name: Gecko Grid Layout
  * Plugin URI:  https://github.com/gecko-designs/gecko-grid-layout
  * Description: Grid Layout block uses CSS grid to create grid layouts in gutenberg.
- * Version: 1.2.3
+ * Version: 1.2.4
  * Author: Gecko Designs
  * Author URI: https://geckodesigns.com
  * Text Domain: gecko-grid-layout
@@ -56,7 +56,7 @@ class GeckoGridLayout {
 			filemtime( plugin_dir_path(__FILE__) . "dist/public.bundle.js" )
 		);
 		// Enqueue front end scripts if the_content is applied.
-		add_filter( 'the_content',[$this, 'frontend_enqueue']);
+		add_filter( 'the_content',[$this, 'frontend_enqueue'], 1);
 
 		// Initialize custom blocks
 		// Dynamically import blocks in blocks folder
@@ -78,14 +78,17 @@ class GeckoGridLayout {
 	 * If Post has block then enqueue script. Usin add_filter the_content ensures that it checks even if multiple posts have been added and the global post does not have the block.
 	 */
 	public function frontend_enqueue($content){
-		$post = get_the_id();
-		if(has_block( 'gecko/grid-layout', $post )){
+		if(has_block( 'gecko/grid-layout', $content)){
 			wp_enqueue_style('gecko-grid-layout');
 		}
-		if(has_block( 'gecko/grid-layout-image', $post )){
+		if(has_block( 'gecko/grid-layout-image', $content )){
 			wp_enqueue_script('gecko-grid-layout-image');
 		}
 		return $content;
+	}
+
+	public function content_has_block($content, $blockName) {
+
 	}
 
 	/**
